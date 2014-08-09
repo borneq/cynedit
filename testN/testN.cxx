@@ -4,6 +4,7 @@
 #include <T_Stack.hpp>
 #include <T_Queue.hpp>
 #include <N_File_Stream.h>
+#include <n_utf.h>
 
 using namespace ab;
 
@@ -63,9 +64,32 @@ void test_stream()
 	N_File_Stream outStream("abc.000","w");
 }
 
+
+void test_ucs()
+{
+	char buf[4];
+	wchar_t wbuf[2];
+
+	for (int i=0; i<=0x10ffff; i++)
+	{
+	  utf8encode(i, buf);
+	  int len;
+	  int n=utf8decode(buf,&len);
+	  if (n!=i) throw "bad utf8 conversion";
+	  if (i<0xD800 || i>0xDFFF)
+	  {
+		  utf16encode(i, wbuf);
+		  n=utf16decode(wbuf,&len);
+		  if (n!=i) 
+			  throw "bad utf8 conversion";
+	  }
+	}
+}
+
 int main(int argc, char** argv) {	
 	//test_list();
 	//test_stack();
-	test_queue();
-	getchar();
+	//test_queue();
+	test_ucs();
+//	getchar();
 }
