@@ -1,4 +1,4 @@
-#include <string.h> // memcp
+#include <string.h> // memcpy
 #include <stdlib.h> //malloc
 #include <stdio.h> //NULL
 
@@ -23,4 +23,18 @@ char *head,*tail;
   if (*tail==10 && tail[-1]==13) tail++; //for Windows line endings
   pos = tail-text;
   return true;
+}
+
+//alloc space to lineA+lineB ana dfree lineA,lineB
+char *mergeLines(char *lineA, char *lineB)
+{
+	int lenA = strlen(lineA);
+	int lenB = strlen(lineB);
+	char *res = (char*)malloc(lenA+lenB+1);
+	memcpy(res, lineA, lenA);
+	memcpy(res+lenA, lineB, lenB);
+	res[lenA+lenB] = 0;
+	free(lineA);
+	free(lineB);
+	return res;
 }
