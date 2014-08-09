@@ -21,6 +21,12 @@
     <ClCompile Include="..\N_Base_List.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\N_Stream.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\N_File_Stream.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\T_Stack.hpp">
@@ -30,6 +36,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\T_List.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Stream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Base_List.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Seek_Stream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_File_Stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +66,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,9 +77,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\N_Base_List.cxx" />
+    <ClCompile Include="..\N_File_Stream.cxx" />
+    <ClCompile Include="..\N_Stream.cxx" />
     <ClCompile Include="testN.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\N_Base_List.h" />
+    <ClInclude Include="..\N_File_Stream.h" />
+    <ClInclude Include="..\N_Seek_Stream.h" />
+    <ClInclude Include="..\N_Stream.h" />
     <ClInclude Include="..\T_List.hpp" />
     <ClInclude Include="..\T_Queue.hpp" />
     <ClInclude Include="..\T_Stack.hpp" />

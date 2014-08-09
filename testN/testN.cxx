@@ -3,6 +3,7 @@
 #include <T_List.hpp>
 #include <T_Stack.hpp>
 #include <T_Queue.hpp>
+#include <N_File_Stream.h>
 
 using namespace ab;
 
@@ -55,6 +56,11 @@ void test_queue()
 		queue.push(i);
 	for (int i=0; i<10; i++) 
         printf("pop=%d\n",queue.pop());	
+}
+
+void test_stream()
+{
+	N_File_Stream outStream("abc.000","w");
 }
 
 int main(int argc, char** argv) {	
