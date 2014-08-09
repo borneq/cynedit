@@ -25,7 +25,7 @@ protected:
 	}
 
 public:
-	void add(T item)	
+	void add(T item)
 	{
 		if (_size >= _capacity)
 		  grow();

@@ -16,7 +16,7 @@ int n;
   return 31-n;
 }
 
-///grows about 1/4 to 1/7 of curent size, wherin sizes always (except small sizes) 
+///grows about 1/4 to 1/7 of curent size, wherin sizes always (except small sizes)
 //take values 2^n+k*2^{n-2}, where k=0..3
 int grow_capacity(int capacity)
 {
