@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cynedit", "cynedit.vcxproj", "{DE72560A-A16B-4373-9DC7-A1DA20A3061F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE72560A-A16B-4373-9DC7-A1DA20A3061F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DE72560A-A16B-4373-9DC7-A1DA20A3061F}.Debug|Win32.Build.0 = Debug|Win32
+		{DE72560A-A16B-4373-9DC7-A1DA20A3061F}.Release|Win32.ActiveCfg = Release|Win32
+		{DE72560A-A16B-4373-9DC7-A1DA20A3061F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
