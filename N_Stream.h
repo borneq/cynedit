@@ -7,7 +7,7 @@ class N_Stream {
 protected:
     long long _position;
 	long long _size;
-public:	
+public:
 	virtual size_t read(void *buffer, size_t size) = 0;
 	virtual size_t write(void *buffer, size_t size) = 0;
 	char readByte();
@@ -20,7 +20,7 @@ public:
 	void WriteQWord(long long q);
 	virtual long long get_position(){return _position;}
 	virtual long long get_size(){return _size;}
-};  
+};
 }
 
 #endif /*N_STREAM_H*/

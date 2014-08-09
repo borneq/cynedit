@@ -72,14 +72,14 @@ void test_ucs()
 
 	for (int i=0; i<=0x10ffff; i++)
 	{
-	  utf8encode(i, buf);
+	  utf32to8One(i, buf);
 	  int len;
-	  int n=utf8decode(buf,&len);
+	  int n=utf8to32One(buf,&len);
 	  if (n!=i) throw "bad utf8 conversion";
 	  if (i<0xD800 || i>0xDFFF)
 	  {
-		  utf16encode(i, wbuf);
-		  n=utf16decode(wbuf,&len);
+		  utf32to16One(i, wbuf);
+		  n=utf16to32One(wbuf,&len);
 		  if (n!=i) 
 			  throw "bad utf8 conversion";
 	  }

@@ -14,7 +14,7 @@ size_t N_File_Stream::write(void *buffer, size_t size)
 
 long long N_File_Stream::get_position()
 {
-	long long position;	
+	long long position;
 	fgetpos(pFile, &position);
 	return position;
 }
@@ -27,7 +27,7 @@ long long N_File_Stream::get_size()
 {
 	if (_size == -1)
 	{
-		long long savpos;	
+		long long savpos;
 		fgetpos(pFile, &savpos);
 		fseek(pFile,0L,SEEK_END);
 		fgetpos(pFile, &_size);

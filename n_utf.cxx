@@ -2,7 +2,7 @@ namespace ab {
 /*! Decode a single UTF-8 encoded character starting at \e start
 	after decoding set \e len to length this character
 */
-unsigned long utf8decode(char *start, int *len)
+unsigned long utf8to32One(char *start, int *len)
 {
 unsigned char b0,b1,b2,b3;
 	*len = 1;
@@ -45,7 +45,7 @@ unsigned char b0,b1,b2,b3;
     utf8encode/fl_utf8decode will be the identity for all codes between 0
     and 0x10ffff.
 */
-int utf8encode(unsigned ucs, char* buf) 
+int utf32to8One(unsigned ucs, char* buf)
 {
   if (ucs < 0x000080U) {
     buf[0] = ucs;
@@ -74,10 +74,26 @@ int utf8encode(unsigned ucs, char* buf)
   }
 }
 
-/*! 
+/*! get length utf8 string of one UCS character*/
+int lenUtf8(unsigned ucs)
+{
+  if (ucs < 0x000080U)
+    return 1;
+  else if (ucs < 0x000800U)
+    return 2;
+  else if (ucs < 0x010000U)
+    return 3;
+  else if (ucs <= 0x0010ffffU)
+    return 4;
+  else
+    /* encode 0xfffd: */
+    return 3;
+}
+
+/*!
 	Decode pair surrogates to one UCS
 */
-unsigned long utf16decode(wchar_t *start, int *len)
+unsigned long utf16to32One(wchar_t *start, int *len)
 {
 	if (start[0]>=0xD800 && start[0]<=0xDFFF)
 	{
@@ -92,26 +108,39 @@ unsigned long utf16decode(wchar_t *start, int *len)
 }
 
 ///returns length = 1 or 2
-int utf16encode(unsigned ucs, wchar_t* buf) 
+int utf32to16One(unsigned ucs, wchar_t* buf)
 {
 	if (ucs<0x10000)
     {
 		if (ucs>=0xD800 && ucs<=0xDFFF)
 			buf[0] = 0xfffd;
 		else
-			buf[0] = (wchar_t) ucs;      
+			buf[0] = (wchar_t) ucs;
 		return 1;
-	} 
+	}
 	else if(ucs <= 0x0010ffffU)
-	{	 
+	{
       buf[0] = ((ucs-0x10000) >>10) + 0xD800;
-      buf[1] = ((ucs-0x10000) & 1023) + 0xDC00;      
+      buf[1] = ((ucs-0x10000) & 1023) + 0xDC00;
 	  return 2;
 	}
 	else
-	{	
+	{
 		buf[0] = 0xfffd;
 		return 1;
 	}
 }
+
+/*! get length utf16 string of one UCS character*/
+int lenUtf16(unsigned ucs)
+{
+	if (ucs<0x10000)
+    	return 1;
+	else if(ucs <= 0x0010ffffU)
+	  return 2;
+	else
+      return 1;
+}
+
+
 }

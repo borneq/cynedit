@@ -9,7 +9,7 @@ namespace ab {
 class N_File_Stream : public N_Seek_Stream {
 protected:
 	FILE *pFile;
-public:		
+public:
 	N_File_Stream(const wchar_t *filename, const wchar_t *mode)
 	{
 		pFile = _wfopen(filename, mode);
@@ -26,7 +26,7 @@ public:
 	long long get_size();
 	bool seek(long long position);
 	bool seek(long offset, int origin);
-};  
+};
 }
 
 #endif /*N_FILE_STREAM_H*/
