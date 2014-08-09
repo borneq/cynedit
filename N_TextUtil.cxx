@@ -7,18 +7,18 @@
 //if Pos points to ending #0 but string ends by space is not end yet
 bool getNextLine(char *text, char*&line, int &pos)
 {
-char *head,*tail;  
+char *head,*tail;
   line = NULL;
   if (text==NULL) return false;
   head = text + pos;
   tail = head;
   if (head>text && head[-1]==NULL) return false;
-    
+
   while (*tail != 10 && *tail != 13 && *tail != NULL) tail++;
   line = (char*)malloc(tail-head+1);
   memcpy ( line, head, tail-head );
   line[tail-head] = 0;
-  
+
   tail++; //for Unix line ending
   if (*tail==10 && tail[-1]==13) tail++; //for Windows line endings
   pos = tail-text;

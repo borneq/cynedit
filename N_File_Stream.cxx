@@ -4,7 +4,7 @@
 namespace ab {
 size_t N_File_Stream::read(void *buffer, size_t size)
 {
-	return fread(buffer, size, 1, pFile);
+	return fread(buffer, 1, size, pFile);
 }
 
 size_t N_File_Stream::write(void *buffer, size_t size)

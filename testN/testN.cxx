@@ -127,7 +127,9 @@ void test_getNextLine()
 void test_stringlist()
 {
 	N_StringList list;
-	list.loadFromFile(L"c:\\fltk\\CHANGES");
+	list.loadFromFile(L"c:\\temp\\test.txt");
+	for (int i=0; i<list.size(); i++)
+		printf("%s\n",list[i]);
 }
 
 int main(int argc, char** argv) {	
@@ -135,7 +137,7 @@ int main(int argc, char** argv) {
 	//test_stack();
 	//test_queue();
 	//test_ucs();
-	//test_stringlist();
-	test_getNextLine();
+	//test_getNextLine();
+	test_stringlist();
 	getchar();
 }
