@@ -1,6 +1,7 @@
 #include <memory.h>
 #include <stdio.h>
 #include <T_List.hpp>
+#include <T_Stack.hpp>
 
 using namespace afltk;
 
@@ -31,7 +32,18 @@ void test_list()
 	}
 }
 
+void test_stack()
+{
+	T_Stack<char> stack(true);
+	stack.push(0);
+	stack.push(1);
+	stack.push(2);
+	printf("pop=%d\n",stack.pop());
+	printf("pop=%d\n",stack.pop());
+	printf("pop=%d\n",stack.pop());
+}
 int main(int argc, char** argv) {	
-	test_list();
+	//test_list();
+	test_stack();
 	getchar();
 }

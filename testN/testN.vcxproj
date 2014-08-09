@@ -79,6 +79,9 @@
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="testN.cxx" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\T_Stack.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
