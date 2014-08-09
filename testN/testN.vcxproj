@@ -79,6 +79,7 @@
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="..\N_File_Stream.cxx" />
     <ClCompile Include="..\N_Stream.cxx" />
+    <ClCompile Include="..\N_StringList.cxx" />
     <ClCompile Include="..\n_utf.cxx" />
     <ClCompile Include="testN.cxx" />
   </ItemGroup>
@@ -87,6 +88,7 @@
     <ClInclude Include="..\N_File_Stream.h" />
     <ClInclude Include="..\N_Seek_Stream.h" />
     <ClInclude Include="..\N_Stream.h" />
+    <ClInclude Include="..\N_StringList.h" />
     <ClInclude Include="..\n_utf.h" />
     <ClInclude Include="..\T_List.hpp" />
     <ClInclude Include="..\T_Queue.hpp" />

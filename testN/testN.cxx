@@ -5,6 +5,7 @@
 #include <T_Queue.hpp>
 #include <N_File_Stream.h>
 #include <n_utf.h>
+#include <N_StringList.h>
 
 using namespace ab;
 
@@ -86,10 +87,17 @@ void test_ucs()
 	}
 }
 
+void test_stringlist()
+{
+	N_StringList list;
+	list.loadFromFile(L"c:\\fltk\\CHANGES");
+}
+
 int main(int argc, char** argv) {	
 	//test_list();
 	//test_stack();
 	//test_queue();
-	test_ucs();
+	//test_ucs();
+	test_stringlist();
 //	getchar();
 }

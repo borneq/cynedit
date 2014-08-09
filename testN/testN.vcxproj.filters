@@ -30,6 +30,9 @@
     <ClCompile Include="..\n_utf.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\N_StringList.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\T_Stack.hpp">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\n_utf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_StringList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

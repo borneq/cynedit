@@ -1,5 +1,7 @@
 #include <assert.h>
 #include <n_utf.h>
+#include <cstring>
+#include <stdlib.h>
 
 namespace ab {
 /*! Decode a single UTF-8 encoded character starting at \e start
@@ -8,7 +10,7 @@ namespace ab {
 	in this case function returns zero. This occurs when UTF8 text
 	is divided to blocks and block division not fit to uutf8 division
 */
-unsigned long utf8to32_one(char *start, int *len, int maxlen)
+unsigned long utf8to32_one(const char *start, int *len, int maxlen)
 {
 unsigned char b0,b1,b2,b3;
     assert(maxlen>=1 && maxlen<=4);
@@ -103,7 +105,7 @@ int lenUtf8_one(unsigned ucs)
 /*!
 	Decode pair surrogates to one UCS
 */
-unsigned long utf16to32_one(wchar_t *start, int *len, int maxlen)
+unsigned long utf16to32_one(const wchar_t *start, int *len, int maxlen)
 {
 	assert(maxlen>=1 && maxlen<=2);
 	if (start[0]>=0xD800 && start[0]<=0xDFFF)
@@ -155,7 +157,7 @@ int lenUtf16_one(unsigned ucs)
 }
 
 ///returns number bytes as a part of UTF8 character; in correct situation should return 0
-int utf8to32(char *utf8, int utf8len, int *utf32)
+int utf8to32(const char *utf8, int utf8len, int *utf32)
 {
 	int len;
 	while (utf8len>0)
@@ -169,7 +171,7 @@ int utf8to32(char *utf8, int utf8len, int *utf32)
 	return utf8len;
 }
 
-void utf32to8(int *utf32, int utf32len, char *utf8)
+void utf32to8(const int *utf32, int utf32len, char *utf8)
 {
 	for (int i=0; i<utf32len; i++)
 	{
@@ -178,7 +180,7 @@ void utf32to8(int *utf32, int utf32len, char *utf8)
 	}
 }
 
-int utf16to32(wchar_t *utf16, int utf16len, int *utf32)
+int utf16to32(const wchar_t *utf16, int utf16len, int *utf32)
 {
 	int len;
 	while (utf16len>0)
@@ -192,7 +194,7 @@ int utf16to32(wchar_t *utf16, int utf16len, int *utf32)
 	return utf16len;
 }
 
-void utf32to16(int *utf32, int utf32len, wchar_t *utf16)
+void utf32to16(const int *utf32, int utf32len, wchar_t *utf16)
 {
 	for (int i=0; i<utf32len; i++)
 	{
@@ -201,7 +203,7 @@ void utf32to16(int *utf32, int utf32len, wchar_t *utf16)
 	}
 }
 
-int utf8to16(char *utf8, int utf8len, wchar_t *utf16)
+int utf8to16(const char *utf8, int utf8len, wchar_t *utf16)
 {
 	int len8;
 	while (utf8len>0)
@@ -216,8 +218,24 @@ int utf8to16(char *utf8, int utf8len, wchar_t *utf16)
 	return utf8len;
 }
 
+int lenUtf8to16(const char *utf8, int utf8len)
+{
+	int sumLen16 = 0;
+	int len8;
+	while (utf8len>0)
+	{
+		unsigned long ucs = utf8to32_one(utf8, &len8, utf8len);
+		if (len8==0) return sumLen16+1;
+		utf8 += len8;
+		utf8len -= len8;
+		int len16 = lenUtf16_one(ucs);
+		sumLen16 += len16;
+	}
+	return sumLen16;
+}
 
-int utf16to8(wchar_t *utf16, int utf16len, char *utf8)
+
+int utf16to8(const wchar_t *utf16, int utf16len, char *utf8)
 {
 	int len16;
 	while (utf16len>0)
@@ -232,4 +250,13 @@ int utf16to8(wchar_t *utf16, int utf16len, char *utf8)
 	return utf16len;
 }
 
+
+wchar_t *allocUtf16for8(const char *utf8)
+{
+	int len = strlen(utf8);
+	int lenW = lenUtf8to16(utf8, len);
+	wchar_t *wbuf = (wchar_t *) malloc(sizeof(wchar_t)*(lenW+1));
+	utf8to16(utf8, len, wbuf);
+	return wbuf;
+}
 }

@@ -2,6 +2,9 @@
 #define N_FILE_STREAM_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <cstring>
+#include <n_utf.h>
 #include <N_Seek_Stream.h>
 
 namespace ab {
@@ -15,7 +18,14 @@ public:
 		pFile = _wfopen(filename, mode);
 		_size = -1;
 	}
-	N_File_Stream(const char *filenameUTF8, const char *mode ){throw "not implemented";}
+	N_File_Stream(const char *filenameUTF8, const char *mode )
+	{
+		wchar_t *wbuf = allocUtf16for8(filenameUTF8);
+		wchar_t *wmodebuf = allocUtf16for8(mode);
+		N_File_Stream(wbuf, wmodebuf);
+		free(wbuf);
+		free(wmodebuf);
+	}
 
 	~N_File_Stream(){fclose(pFile);}
 

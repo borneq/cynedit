@@ -3,5 +3,5 @@ T_List::pack_capacity()
 T_Stack::is_empty()
 T_Stack::peek()
 
-N_File_Stream(const char *filenameUTF8, const char *mode ){}
-unicode conversions
+
+
