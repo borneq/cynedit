@@ -27,10 +27,13 @@
     <ClCompile Include="..\N_File_Stream.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\n_utf.cxx">
+    <ClCompile Include="..\N_StringList.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\N_StringList.cxx">
+    <ClCompile Include="..\N_Utf.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\N_TextUtil.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,10 +59,13 @@
     <ClInclude Include="..\N_File_Stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\n_utf.h">
+    <ClInclude Include="..\N_StringList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\N_StringList.h">
+    <ClInclude Include="..\N_Utf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_TextUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

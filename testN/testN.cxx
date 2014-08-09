@@ -6,6 +6,7 @@
 #include <N_File_Stream.h>
 #include <n_utf.h>
 #include <N_StringList.h>
+#include <N_TextUtil.h>
 
 using namespace ab;
 
@@ -87,6 +88,42 @@ void test_ucs()
 	}
 }
 
+void show(char *strA)
+{
+	int pos = 0;
+	char *line;
+    while (getNextLine(strA,line,pos)) printf("%d : \"%s\" ",pos,line);
+	printf("\n");
+	free(line);
+}
+
+void test_getNextLine()
+{
+	char *strA;
+	strA = "";				// ""
+	show(strA);
+	strA = "\r";			// "",""
+	show(strA);
+	strA = "abc";			// "abc"
+	show(strA);
+	strA = "\rabc";			// "","abc"
+	show(strA);
+	strA = "abc\rdef";		// "abc","def"
+	show(strA);
+	strA = "abc\rdef\r";	// "abc","def",""
+	show(strA);
+	strA = "abc\r\rdef";	// "abc","","def"
+	show(strA);
+	strA = "abc\r\r";		// "abc","",""
+	show(strA);
+	strA = "abc\rdef\r\n123\n";		// "abc","def","123",""
+	show(strA);
+	strA = "abc\rdef\r\n\r123\n";	// "abc","def","","123",""
+	show(strA);
+	strA = "abc\rdef\r\r123";		// "abc","def","","123"	
+	show(strA);
+}
+ 
 void test_stringlist()
 {
 	N_StringList list;
@@ -98,6 +135,7 @@ int main(int argc, char** argv) {
 	//test_stack();
 	//test_queue();
 	//test_ucs();
-	test_stringlist();
-//	getchar();
+	//test_stringlist();
+	test_getNextLine();
+	getchar();
 }
