@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <N_Base_List.H>
 
-namespace afltk {
+namespace ab {
 /// B_List is template class of list
 template<typename T>
 class T_List {

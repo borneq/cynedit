@@ -4,7 +4,7 @@
 #include <T_Stack.hpp>
 #include <T_Queue.hpp>
 
-using namespace afltk;
+using namespace ab;
 
 void test_list()
 {

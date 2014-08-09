@@ -1,7 +1,7 @@
 #ifndef T_QUEUE_H
 #define T_QUEUE_H
 
-namespace afltk {
+namespace ab {
 template<typename T>
 /// Queue: items are added to tail and are removed from the Head.
 /// if _head=_tail -> Queue empty

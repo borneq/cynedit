@@ -3,7 +3,7 @@
 #define T_STACK_H
 #include <T_List.hpp>
 
-namespace afltk {
+namespace ab {
 template<typename T>
 class T_Stack : protected T_List<T> {
 public:

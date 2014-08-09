@@ -1,6 +1,6 @@
 #include "N_Base_List.H"
 
-namespace afltk {
+namespace ab {
 ///return the most significant byte which is set, the same as BSR assembler opcode
 ///but assembler is not portable
 int find_set_bit(unsigned int x)
