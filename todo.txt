@@ -1,2 +1,4 @@
-T_List::insert
-T_List::pack_capacity
+T_List::insert(int index, T item)
+T_List::pack_capacity()
+T_Stack::is_empty()
+T_Stack::peek()

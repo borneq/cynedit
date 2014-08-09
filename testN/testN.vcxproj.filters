@@ -26,5 +26,11 @@
     <ClInclude Include="..\T_Stack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\T_Queue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\T_List.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

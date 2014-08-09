@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <T_List.hpp>
 #include <T_Stack.hpp>
+#include <T_Queue.hpp>
 
 using namespace afltk;
 
@@ -42,8 +43,23 @@ void test_stack()
 	printf("pop=%d\n",stack.pop());
 	printf("pop=%d\n",stack.pop());
 }
+
+void test_queue()
+{
+	T_Queue<int> queue(true);
+	for (int i=0; i<100; i++) 
+		queue.push(i);
+	for (int i=0; i<100; i++) 
+	    printf("pop=%d\n",queue.pop());	
+	for (int i=0; i<25; i++) 
+		queue.push(i);
+	for (int i=0; i<10; i++) 
+        printf("pop=%d\n",queue.pop());	
+}
+
 int main(int argc, char** argv) {	
 	//test_list();
-	test_stack();
+	//test_stack();
+	test_queue();
 	getchar();
 }

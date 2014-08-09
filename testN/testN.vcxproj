@@ -80,6 +80,8 @@
     <ClCompile Include="testN.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\T_List.hpp" />
+    <ClInclude Include="..\T_Queue.hpp" />
     <ClInclude Include="..\T_Stack.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
