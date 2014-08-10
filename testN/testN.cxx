@@ -133,12 +133,36 @@ void test_stringlist()
 		printf("%s\n",list[i]);
 }
 
+int compareInt(int &n1,int &n2)
+{
+	if (n1<n2) return -1;
+	else if (n1>n2) return 1;
+	else return 0;
+}
+
+void sortlist()
+{
+	T_List<int> list;
+	srand(0);
+	for (int i=0; i<10; i++) 
+		list.add(rand()%100);
+	list.compare = compareInt;
+	for (int i=0; i<list.size(); i++) printf("%d ",list[i]);
+	printf("\n");
+	list.sort();
+	for (int i=0; i<list.size(); i++) printf("%d ",list[i]);
+	printf("\n");
+	int index;
+	list.binaryFind(37, index);
+}
+
 int main(int argc, char** argv) {	
 	//test_list();
 	//test_stack();
 	//test_queue();
 	//test_ucs();
 	//test_getNextLine();
-	test_stringlist();
-	getchar();
+	//test_stringlist();
+	sortlist();
+	//getchar();
 }

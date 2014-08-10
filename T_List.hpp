@@ -49,6 +49,8 @@ protected:
 
 
 public:
+	int (*compare)(T&,T&);
+
 	void add(T item)
 	{
 		if (_size >= _capacity)
@@ -64,6 +66,89 @@ public:
 		_size--;
 		if (_auto_shrink &&_size>0 && _size <= _shrink_trigger)
 			shrink();
+	}
+
+	struct StackItem
+	{
+		long first;
+		long last;
+	};
+
+	/* Based on a non-recursive QuickSort from the SWAG-Archive.
+	 TV Sorting Unit by Brad Williams
+	 TLongIntList.Sort from Synedita
+	 the same mwLongIntList from GExperts */
+	void sort()
+	{
+		sort(0, _size-1);
+	}
+
+	void sort(int first, int last)
+	{
+	  long Left, Right, SubArray, SubLeft, SubRight;
+	  T Temp, Pivot;
+	  StackItem Stack[32];
+
+	  if (compare==NULL) throw "must be compare fucntion pointer";
+	  if (_size>1)
+	  {
+		SubArray = 0;
+		Stack[SubArray].first = first;
+		Stack[SubArray].last = last;
+		do
+		{
+		  Left = Stack[SubArray].first;
+		  Right = Stack[SubArray].last;
+		  SubArray--;
+		  do
+		  {
+			SubLeft = Left;
+			SubRight = Right;
+			Pivot = _list[(Left + Right) >> 1];
+			do
+			{
+			  while (compare(_list[SubLeft], Pivot)<0) SubLeft++;
+			  while (compare(Pivot, _list[SubRight])<0) SubRight--;
+			  if (SubLeft <= SubRight)
+			  {
+				Temp = _list[SubLeft];
+				_list[SubLeft] = _list[SubRight];
+				_list[SubRight] = Temp;
+				SubLeft++;
+				SubRight--;
+			  }
+			}while  (SubLeft <= SubRight);
+			if (SubLeft < Right)
+			{
+			  SubArray++;
+			  Stack[SubArray].first = SubLeft;
+			  Stack[SubArray].last = Right;
+			}
+			Right = SubRight;
+		  }while( Left < Right);
+		}
+		while (SubArray >= 0);
+	  }
+	}
+
+	bool binaryFind(T item, int &index)
+	{
+	 int L,R;
+	 int res;
+		index = 0;
+		if (_size<1) return false;
+		L = 0;
+		R = _size-1;
+		while (L <= R)
+		{
+			index = (L + R) >> 1;
+			res = compare(_list[index], item);
+			if (res<0) L = index + 1;
+			else if (res>0) R = index - 1;
+			else return true;
+		}
+		index = L;
+		return false;
 	}
 
 	inline bool is_empty(){return _size == 0;}
