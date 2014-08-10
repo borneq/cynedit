@@ -30,8 +30,10 @@ int main(int argc, char** argv) {
   Fl_Box *statusbar = create_status(window);
   Fl_Menu_Bar menubar(0,0,window.w(),20);
   menubar.menu(menutable);
-  CynView viewer(150,50,75,75);
-  viewer.lines.loadFromFile(L"../CynView.cxx");
+  CynView viewer(150,40,125,125);
+  viewer.lines.loadFromFile(L"c:\\temp\\cyntest.cpp");
+	  //(L"../CynView.cxx");
+  window.resizable(viewer);
   window.end();
   window.show(argc,argv);
   return Fl::run();

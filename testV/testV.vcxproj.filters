@@ -33,6 +33,9 @@
     <ClCompile Include="..\N_TextUtil.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Fold.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CynView.h">
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="..\N_StringList.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Fold.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CynView.cxx" />
+    <ClCompile Include="..\Fold.cxx" />
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="..\N_File_Stream.cxx" />
     <ClCompile Include="..\N_StringList.cxx" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CynView.h" />
+    <ClInclude Include="..\Fold.h" />
     <ClInclude Include="..\N_StringList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
