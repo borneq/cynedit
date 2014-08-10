@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
+#include <stdexcept>
 #include <n_utf.h>
 #include <N_Seek_Stream.h>
 
@@ -16,6 +17,7 @@ public:
 	N_File_Stream(const wchar_t *filename, const wchar_t *mode)
 	{
 		pFile = _wfopen(filename, mode);
+		if (pFile==NULL) throw std::invalid_argument("N_File_Stream can't open filename");
 		_size = -1;
 	}
 	N_File_Stream(const char *filenameUTF8, const char *mode )

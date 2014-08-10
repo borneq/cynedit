@@ -6,6 +6,7 @@
 namespace ab {
 class N_StringList : public T_List<char *> {
 public:
+	int lineEndings;
 	void clear();
 	void loadFromFile(wchar_t *fileName);
 	void loadFromStream(N_Stream &stream);

@@ -92,7 +92,8 @@ void show(char *strA)
 {
 	int pos = 0;
 	char *line;
-    while (getNextLine(strA,line,pos)) printf("%d : \"%s\" ",pos,line);
+    int endType;
+    while (getNextLine(strA,line,pos,endType)) printf("%d : \"%s\" endType=%d",pos,line,endType);
 	printf("\n");
 	free(line);
 }
