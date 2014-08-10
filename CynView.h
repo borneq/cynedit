@@ -10,6 +10,7 @@ using namespace ab;
 namespace afltk {
 class FL_EXPORT CynView : public Fl_Group {
 public:
+	int topLine; ///start display from this line
 	N_StringList lines;
 	CynView(int X, int Y, int W, int H, const char *L=0);
 	~CynView();	
