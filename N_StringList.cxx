@@ -80,14 +80,3 @@ void N_StringList::loadFromStream(N_Stream &stream)
 		}
 }
 }
-/*szczegolny przypadek - gdy przeczya x \n wtedy dodaje do pustej - ok
-	ale gdy przeczyta do \n - wtedt nowea linia jest pusta, tez ok
-gorszy przypadek, gdy na dwuznaku przerywa - wtedy ostatnia linia jest pusta, pierwsza z nastepnych jest pusta
-³¹czy je i wstawia pust¹ liniê
-porzebny jest znak koncowy linii i znak pocz¹tkowy nowej linii
-wtedy gdy bêdzie CRLF nalezaloby j¹ pomijac
-poza tym to potrzebne do gromadzenia znaków konca linii, aby zapisaæ tak jak maksymalnie bylo
-albo zapisywac bez zmian , opcjonalnie
-czyli nie tylok char* pamietac , ale char*, int len, enum lineendings - 9 bajtów zamiast 4
-ale na razie nie, jedynie zliczac cr i lf
-*/
