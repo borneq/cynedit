@@ -1,3 +1,4 @@
+#include <FL/fl_draw.H>
 #include <CynView.h>
 
 namespace afltk {
@@ -16,5 +17,13 @@ int CynView::handle(int event)
 
 void CynView::draw()
 {
+	fl_font(FL_COURIER, 12);
+	int pos_x = x();
+	int pos_y = y();
+	for (int i=0; i<lines.size()-1; i++)
+	{
+		fl_draw(lines[i], strlen(lines[i]), pos_x+5, pos_y+12);
+		pos_y += 16;
+	}
 }
 }
