@@ -21,7 +21,7 @@ void N_StringList::loadFromStream(N_Stream &stream)
 {
 	int endingsCounts[4];
 	for (int i=0; i<4; i++) endingsCounts[i]=0;
-	const int BLOCKSIZE = 6;
+	const int BLOCKSIZE = 512*1024;
 	int currentBlockSize = (int)std::min((long long)BLOCKSIZE, stream.get_size());
 	char *buf = (char*) malloc(currentBlockSize+1);
 
@@ -48,6 +48,8 @@ void N_StringList::loadFromStream(N_Stream &stream)
 				{
 					assert(_list[size()-1][0]==0 && line[0]==0);
 					del(size()-1);
+					endingsCounts[CR_MAC]--;
+					endingsCounts[CRLF_WINDOWS]++;
 				}
 				else
 				{
