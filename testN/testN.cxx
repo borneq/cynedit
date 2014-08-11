@@ -146,14 +146,14 @@ void sortlist()
 	srand(0);
 	for (int i=0; i<10; i++) 
 		list.add(rand()%100);
-	list.compare = compareInt;
+	list.compareP = compareInt;
 	for (int i=0; i<list.size(); i++) printf("%d ",list[i]);
 	printf("\n");
 	list.sort();
 	for (int i=0; i<list.size(); i++) printf("%d ",list[i]);
 	printf("\n");
 	int index;
-	list.binaryFind(37, index);
+	list.binaryFind(-96, index);
 }
 
 int main(int argc, char** argv) {	

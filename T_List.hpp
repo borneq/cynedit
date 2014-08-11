@@ -49,7 +49,8 @@ protected:
 
 
 public:
-	int (*compare)(T&,T&);
+	///if first>second return 1 else if first<second return -1 else if equal return zero
+	int (*compareP)(T&,T&);
 
 	void add(T item)
 	{
@@ -89,7 +90,7 @@ public:
 	  T Temp, Pivot;
 	  StackItem Stack[32];
 
-	  if (compare==NULL) throw "must be compare fucntion pointer";
+	  if (compareP==NULL) throw "must be compareP function pointer";
 	  if (_size>1)
 	  {
 		SubArray = 0;
@@ -107,8 +108,8 @@ public:
 			Pivot = _list[(Left + Right) >> 1];
 			do
 			{
-			  while (compare(_list[SubLeft], Pivot)<0) SubLeft++;
-			  while (compare(Pivot, _list[SubRight])<0) SubRight--;
+			  while (compareP(_list[SubLeft], Pivot)<0) SubLeft++;
+			  while (compareP(Pivot, _list[SubRight])<0) SubRight--;
 			  if (SubLeft <= SubRight)
 			  {
 				Temp = _list[SubLeft];
@@ -131,6 +132,7 @@ public:
 	  }
 	}
 
+	//if not found - return index next element
 	bool binaryFind(T item, int &index)
 	{
 	 int L,R;
@@ -142,7 +144,7 @@ public:
 		while (L <= R)
 		{
 			index = (L + R) >> 1;
-			res = compare(_list[index], item);
+			res = compareP(_list[index], item);
 			if (res<0) L = index + 1;
 			else if (res>0) R = index - 1;
 			else return true;

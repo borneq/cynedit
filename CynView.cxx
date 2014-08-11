@@ -22,21 +22,34 @@ int CynView::handle(int event)
 	return ret;
 }
 
+void CynView::drawFolding(int foldIndex, int &currLine, int &pos_y)
+{
+	while (foldIndex<fold.size())
+	{
+		while (currLine<=fold[foldIndex].startPos)
+		{
+			//fl_push_clip(x(),pos_y,w(), min(16, y()+h()-pos_y));
+			fl_rectf(x(),pos_y, w(), 16, 255, 255, 255);
+			fl_color(0,0,0);//font color
+			fl_draw(lines[currLine], strlen(lines[currLine]), x()+5, pos_y+12);
+			//fl_pop_clip();
+			pos_y += 16;
+			if (pos_y >= y()+h()) return;
+			currLine++;
+		}
+		currLine += fold[foldIndex].hiddenCnt;
+		foldIndex++;
+	}
+}
+
 void CynView::draw()
 {
+	int foldIndex;
+	fold.findPos(topLine, foldIndex);
 	fl_font(FL_COURIER, 12);
-	int pos_x = x();
 	int pos_y = y();
-	for (int i=topLine; i<lines.size()-1; i++)
-	{
-		//fl_push_clip(x(),pos_y,w(), min(16, y()+h()-pos_y));
-		fl_rectf(x(),pos_y, w(), 16, 255, 255, 255);
-		fl_color(0,0,0);//font color
-		fl_draw(lines[i], strlen(lines[i]), pos_x+5, pos_y+12);
-		//fl_pop_clip();
-		pos_y += 16;
-		if (pos_y >= y()+h()) break;
-	}
+	int currLine = topLine;
+	drawFolding(foldIndex, currLine, pos_y);
 	fl_rectf(x(),pos_y, w(), y()+h()-pos_y, 255, 255, 255);//draw remaining area
 	fl_rect(x(), y(), w(), h(), FL_BLACK);
 }

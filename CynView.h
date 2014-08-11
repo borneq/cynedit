@@ -10,6 +10,8 @@ using namespace ab;
 
 namespace afltk {
 class FL_EXPORT CynView : public Fl_Group {
+private:
+	void drawFolding(int foldIndex, int &currLine, int &pos_y);
 protected:
 	Fold fold;
 public:
