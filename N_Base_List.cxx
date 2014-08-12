@@ -32,6 +32,25 @@ int grow_capacity(int capacity)
   return capacity + delta;
 }
 
+
+int capacity_for_size(int size)
+{
+  int power_of_two, part;
+
+  if (size<=4) return 4;
+  else if (size<=8) return 8;
+  power_of_two = 1 << find_set_bit(size);
+  if (power_of_two >= 64)
+      part = power_of_two >> 2;
+  else if (power_of_two >= 8)
+      part = power_of_two >> 1;
+  int abovepart = (size-power_of_two) % part;
+  if (abovepart==0)
+	  return size;
+  else
+	  return size+(part-abovepart);
+}
+
 ///if list shrinks, new sizes must be the same values as when growing
 int compute_shrink_trigger(int old_capacity)
 {

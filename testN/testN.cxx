@@ -7,6 +7,7 @@
 #include <n_utf.h>
 #include <N_StringList.h>
 #include <N_TextUtil.h>
+#include <N_Base_List.h>
 
 using namespace ab;
 
@@ -161,7 +162,9 @@ void test_insert()
 	T_List<int> list;
 	for (int i=0; i<4; i++) 
 		list.add(i);
-	list.insert(2,100);
+	list.block_insert(2,100);
+	for (int i=0; i<list.size(); i++)
+		printf("%d - %d\n",i,list[i]);
 }
 
 int main(int argc, char** argv) {	
