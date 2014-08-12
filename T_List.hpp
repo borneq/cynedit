@@ -16,16 +16,20 @@ protected:
 	int _size; ///
 	bool _auto_shrink; /// if set  - automatically shrink capacity when size shrink
 	int _shrink_trigger;
-	virtual void grow()
+	virtual void grow(int gapPos, int gapLen)
 	{
 	   int oldCapacity = _capacity;
 	   T *oldList = _list;
 	   _capacity = grow_capacity(_capacity);
 	   _list = (T*)malloc(_capacity * sizeof(T));
 	   assert(_capacity>oldCapacity);
+	   if (_list==NULL) throw "can't malloc";
 	   if (oldList!=NULL)
-		 memcpy(_list, oldList, oldCapacity*sizeof(T));
-	   free(oldList);
+	   {
+			memcpy(_list, oldList, gapPos*sizeof(T));
+			memcpy(_list+gapPos+gapLen, oldList+gapPos, (oldCapacity-gapPos)*sizeof(T));
+			free(oldList);
+	   }
 	   if(_auto_shrink) _shrink_trigger = compute_shrink_trigger(_capacity);
 	}
 
@@ -54,9 +58,19 @@ public:
 
 	void add(T item)
 	{
-		if (_size >= _capacity)
-		  grow();
+		assert(_size<=_capacity);
+		if (_size == _capacity)
+			grow(_size, 1);
 		_list[_size] = item;
+		_size++;
+	}
+
+	void insert(int index, T item)
+	{
+		assert(_size<=_capacity);
+		if (_size == _capacity)
+			grow(index, 1);
+		_list[index] = item;
 		_size++;
 	}
 

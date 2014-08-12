@@ -156,13 +156,15 @@ void sortlist()
 	list.binaryFind(-96, index);
 }
 
+void test_insert()
+{
+	T_List<int> list;
+	for (int i=0; i<4; i++) 
+		list.add(i);
+	list.insert(2,100);
+}
+
 int main(int argc, char** argv) {	
-	//test_list();
-	//test_stack();
-	//test_queue();
-	//test_ucs();
-	//test_getNextLine();
-	//test_stringlist();
-	sortlist();
+	test_insert();
 	//getchar();
 }
