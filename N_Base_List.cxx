@@ -43,13 +43,36 @@ int capacity_for_size_grow(int size)
   if (power_of_two >= 64)
       part = power_of_two >> 2;
   else if (power_of_two >= 8)
-      part = power_of_two >> 1;
+	  part = power_of_two >> 1;
+  else
+	  part = power_of_two;
   int abovepart = (size-power_of_two) % part;
   if (abovepart==0)
 	  return size;
   else
 	  return size+(part-abovepart);
 }
+
+int capacity_for_size_shrink(int size)
+{
+	if (size <= 1) return 4;
+	else if (size <= 5) return 8;
+	int power_of_two, part, size1;
+	power_of_two = 1 << find_set_bit(size);
+	if (power_of_two >= 64)
+		part = power_of_two >> 2;
+	else if (power_of_two >= 8)
+		part = power_of_two >> 1;
+	else
+		part = power_of_two;
+	int abovepart = (size - power_of_two) % part;
+	if (abovepart != 1)
+		size1 = size + part;
+	else
+		size1 = size;
+	return capacity_for_size_grow(size1);
+}
+
 
 ///if list shrinks, new sizes must be the same values as when growing
 int compute_shrink_trigger(int capacity)

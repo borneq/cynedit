@@ -160,14 +160,14 @@ void sortlist()
 void test_insert()
 {
 	T_List<int> list(true);
-	for (int i=0; i<100; i++) 
+	for (int i=0; i<1000; i++) 
 		list.add(i);
-	for (int i=0; i<100; i++) 
+	for (int i=0; i<1000; i++) 
 	{
 		list.del(0);
-		//if (list.capacity()-capacity_for_size_grow(list.size())!=0)
-		printf("size=%d : capacity=%d forsize=%d delta=%d\n", list.size(), list.capacity(), capacity_for_size_grow(list.size()),
-			list.capacity() - capacity_for_size_grow(list.size()));
+		if (list.capacity() != capacity_for_size_shrink(list.size()))
+		printf("size=%d : capacity=%d forsize=%d delta=%d\n", list.size(), list.capacity(), capacity_for_size_shrink(list.size()),
+			list.capacity() - capacity_for_size_shrink(list.size()));
 	}
 }
 
