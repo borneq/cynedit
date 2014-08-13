@@ -160,9 +160,10 @@ void sortlist()
 void test_insert()
 {
 	T_List<int> list(true);
-	for (int i = 0; i<10; i++)
-		list.add(i);	
-	list.block_insert(3, 2);
+	for (int i = 0; i < 10; i++)	
+		list.add(i);
+	
+	list.block_insert(3, 4);
 	for (int i = 0; i < list.size(); i++)
 		printf("%d ", list[i]);
 }

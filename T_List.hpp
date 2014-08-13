@@ -28,7 +28,7 @@ protected:
 	   if (oldList!=NULL)
 	   {
 			memcpy(_list, oldList, gapPos*sizeof(T));
-			memcpy(_list+gapPos+gapLen, oldList+gapPos, (oldCapacity-gapPos)*sizeof(T));
+			memcpy(_list + gapPos + gapLen, oldList + gapPos, (_size - gapPos)*sizeof(T));
 			free(oldList);
 	   }
 	   if(_auto_shrink) _shrink_trigger = compute_shrink_trigger(_capacity);
