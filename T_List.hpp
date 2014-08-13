@@ -70,7 +70,9 @@ public:
 	{
 		assert(_size<=_capacity);
 		if (_size == _capacity)
-			grow(_size+1, index, 1);
+			grow(_size + 1, index, 1);
+		else
+			memmove(_list + index + 1, _list + index, (_size-index)*sizeof(T));
 		_list[index] = item;
 		_size++;
 	}
@@ -80,6 +82,8 @@ public:
 		assert(_size<=_capacity);
 		if (_size +count > _capacity)
 			grow(_size+count, index, count);
+		else
+			memmove(_list + index + count, _list + index, (_size - index)*sizeof(T));
 		_size += count;
 	}
 
