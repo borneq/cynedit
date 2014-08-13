@@ -52,30 +52,30 @@ int capacity_for_size(int size)
 }
 
 ///if list shrinks, new sizes must be the same values as when growing
-int compute_shrink_trigger(int old_capacity)
+int compute_shrink_trigger(int capacity)
 {
   int power_of_two;
   int delta;
 
-  if (old_capacity >= 96)
+  if (capacity >= 96)
   {
-    power_of_two = 1 << find_set_bit(old_capacity);
-    if (old_capacity >= power_of_two / 2 * 3)
+    power_of_two = 1 << find_set_bit(capacity);
+    if (capacity >= power_of_two / 2 * 3)
         delta = power_of_two / 2;
-    else if (old_capacity >= power_of_two / 4 * 5)
+    else if (capacity >= power_of_two / 4 * 5)
         delta = power_of_two / 8 * 3;
     else
         delta = power_of_two / 4;
   }
-  else if (old_capacity >= 80)
+  else if (capacity >= 80)
       delta = 32;
-  else if (old_capacity >= 16)
-      delta = old_capacity / 2;
+  else if (capacity >= 16)
+      delta = capacity / 2;
   else
       delta = 8;
-  if (delta > old_capacity)
+  if (delta > capacity)
     return 0;
   else
-    return old_capacity - delta + 1;
+    return capacity - delta + 1;
 }
 }
