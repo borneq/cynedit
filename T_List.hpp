@@ -16,6 +16,7 @@ protected:
 	int _size; ///
 	bool _auto_shrink; /// if set  - automatically shrink capacity when size shrink
 	int _shrink_trigger;
+
 	virtual void grow(int newSize, int gapPos, int gapLen)
 	{
 	   int oldCapacity = _capacity;
@@ -33,20 +34,20 @@ protected:
 	   if(_auto_shrink) _shrink_trigger = compute_shrink_trigger(_capacity);
 	}
 
-
-	virtual void shrink()
+	virtual void shrink(int newSize, int gapPos, int gapLen)
 	{
 	#ifdef _DEBUG
 		int oldCapacity = _capacity;
 	#endif
 		T *oldList = _list;
-		_capacity = grow_capacity(_size - 1);
+		_capacity = capacity_for_size_shrink(newSize);
 		_list = (T*)malloc(_capacity * sizeof(T));
 	#ifdef _DEBUG
 		assert(_capacity<oldCapacity);
 	#endif
 		assert(oldList!=NULL);
-		memcpy(_list, oldList, _capacity*sizeof(T));
+		memcpy(_list, oldList, gapPos*sizeof(T));
+		memcpy(_list + gapPos, oldList + gapPos+gapLen, (newSize-gapPos)*sizeof(T));
 		free(oldList);
 		if(_auto_shrink) _shrink_trigger = compute_shrink_trigger(_capacity);
 	}
@@ -85,10 +86,21 @@ public:
 	void del(int index)
 	{
 		if (index<0 || index>=_size) return;
-		memmove(&_list[index], &_list[index+1], (_size-index-1)*sizeof(T));
+		if (_auto_shrink &&_size-1>0 && _size-1 <= _shrink_trigger)
+			shrink(_size-1, index, 1);
+		else
+			memmove(_list + index, _list + index + 1, (_size - index - 1)*sizeof(T));
 		_size--;
-		if (_auto_shrink &&_size>0 && _size <= _shrink_trigger)
-			shrink();
+	}
+
+	void block_del(int index, int count)
+	{
+		if (index<0 || index >= _size) return;
+		if (_auto_shrink &&_size - count>0 && _size - count <= _shrink_trigger)
+			shrink(_size - count, index, count);
+		else
+			memmove(_list + index, _list + index + count, (_size - index - count)*sizeof(T));
+		_size -= count;
 	}
 
 	struct StackItem
