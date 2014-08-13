@@ -165,9 +165,9 @@ void test_insert()
 	for (int i=0; i<100; i++) 
 	{
 		list.del(0);
-		//if (list.capacity()-capacity_for_size(list.size())!=0)
-		printf("size=%d : capacity=%d forsize=%d delta=%d\n",list.size(), list.capacity(),capacity_for_size(list.size()), 
-			list.capacity()-capacity_for_size(list.size()));
+		//if (list.capacity()-capacity_for_size_grow(list.size())!=0)
+		printf("size=%d : capacity=%d forsize=%d delta=%d\n", list.size(), list.capacity(), capacity_for_size_grow(list.size()),
+			list.capacity() - capacity_for_size_grow(list.size()));
 	}
 }
 

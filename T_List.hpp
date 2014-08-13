@@ -20,7 +20,7 @@ protected:
 	{
 	   int oldCapacity = _capacity;
 	   T *oldList = _list;
-	   _capacity = capacity_for_size(newSize);
+	   _capacity = capacity_for_size_grow(newSize);
 	   _list = (T*)malloc(_capacity * sizeof(T));
 	   assert(_capacity>oldCapacity);
 	   if (_list==NULL) throw "can't malloc";

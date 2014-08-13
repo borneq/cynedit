@@ -33,7 +33,7 @@ int grow_capacity(int capacity)
 }
 
 
-int capacity_for_size(int size)
+int capacity_for_size_grow(int size)
 {
   int power_of_two, part;
 
