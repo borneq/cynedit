@@ -24,6 +24,10 @@ namespace afltk {
 
 	/// Constructor.
 	CynVirtualView::CynVirtualView(int X, int Y, int W, int H, const char *L) : Fl_Group(X, Y, W, H, L) {
+		_vscroll = new Fl_Scrollbar(X+W-16, Y, 16, H-16);		// will be resized by draw()
+		_vscroll->type(FL_VERTICAL);
+		_hscroll = new Fl_Scrollbar(X, Y+H-16, W-16, 16);		// will be resized by draw()
+		_hscroll->type(FL_HORIZONTAL);
 		Fl::lock();
 		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
 		exchange_data.widget = this;
@@ -32,6 +36,8 @@ namespace afltk {
 
 	/// Destructor.
 	CynVirtualView::~CynVirtualView() {
+		delete _vscroll;
+		delete _hscroll;
 		Fl::unlock();
 		exchange_data.keep_running = 0; /* make any pending threads expire */;
 		n_wait_end_thread(thread);
@@ -49,5 +55,9 @@ namespace afltk {
 		fl_rectf(x(), y(), w(), 16, 255, 255, 255);
 		fl_color(0, 0, 0);//font color
 		fl_draw(s.c_str(), s.size(), x() + 5, y() + 12);
+		_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);		
+		draw_child(*_vscroll);
+		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
+		draw_child(*_hscroll);
 	}
 }
