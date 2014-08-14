@@ -1,23 +1,25 @@
-#ifndef N_THREADS_H
-#define N_THREADS_H
-#ifdef WIN32
-// WINDOWS
-#include <windows.h>
-#include <process.h>
+#ifdef WIN32 /* For WinXX hosts, use _beginthread */
+#  include <windows.h>
+#  include <process.h>
+
+typedef unsigned long Fl_Thread;
 namespace ab {
-	void sleep(int n);
-	typedef unsigned long Fl_Thread;
-	int n_create_thread(Fl_Thread& t, void *(*f) (void *), void* p);
-	void n_wait_end_thread(Fl_Thread& t);
+	Fl_Thread n_create_thread(void(*f) (void *), void *p);
+	void n_wait_end_thread(Fl_Thread t);
 }
-#else /*WIN32*/
-// UNIX
-#include <unistd.h>                            // usleep
-#include <pthread.h>
+
+#  define PAUSE(x)    Sleep(x) /* delay in milliseconds */
+#  define SCHED_YIELD Sleep(0) /* causes a yield on win32 */
+
+#else /* OSX, linux, and other Unix's - assume pthreads */
+#  include <pthread.h>
+#  include <sched.h>  /* for sched_yield */
+
+typedef pthread_t Fl_Thread;
 namespace ab {
-	inline void sleep(int n);
-	typedef pthread_t Fl_Thread;
-	static int n_create_thread(Fl_Thread& t, void *(*f) (void *), void* p)
+	Fl_Thread fl_create_thread(void (*f) (void *), void *p);
 }
-#endif /*WIN32*/
-#endif /*N_THREADS_H*/
+
+#  define PAUSE(x)    usleep((x)*1000) /* delay in milliseconds */
+#  define SCHED_YIELD sched_yield()
+#endif

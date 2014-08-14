@@ -9,10 +9,17 @@
 using namespace ab;
 
 namespace afltk {
+	struct CVV_Thread_Data
+	{
+		int keep_running;
+		int count;
+		Fl_Widget *widget;
+	};
+
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 	protected:
-		int cnt;
 		Fl_Thread thread;
+		CVV_Thread_Data exchange_data;
 	public:
 		N_StringList lines;
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);

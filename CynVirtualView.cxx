@@ -6,25 +6,35 @@
 using namespace ab;
 
 namespace afltk {
-	void* thread_func(void* p)
+	void thread_func(void* p)
 	{
-		int *cnt = (int *)p;
-		while (true)
+		CVV_Thread_Data *data = (CVV_Thread_Data *)p;
+		data->count = 0;
+		/* This is the thread task */
+		while ((data->keep_running))
 		{
-			(*cnt)++;
-			sleep(500);
+			data->count++;
+			Fl::lock(); /* acquire fltk GUI lock */
+			data->widget->redraw();
+			Fl::unlock(); /* release fltk lock */
+			Fl::awake();
+			PAUSE(100);
 		}
-		return NULL;
 	}
+
 	/// Constructor.
 	CynVirtualView::CynVirtualView(int X, int Y, int W, int H, const char *L) : Fl_Group(X, Y, W, H, L) {
-		cnt = 0;
-		thread = n_create_thread(thread, thread_func, &cnt);
-		//n_wait_end_thread(thread);
+		Fl::lock();
+		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
+		exchange_data.widget = this;
+		thread = n_create_thread(thread_func, (void *)(&exchange_data));
 	}
 
 	/// Destructor.
 	CynVirtualView::~CynVirtualView() {
+		Fl::unlock();
+		exchange_data.keep_running = 0; /* make any pending threads expire */;
+		n_wait_end_thread(thread);
 	}
 
 	int CynVirtualView::handle(int event)
@@ -35,7 +45,9 @@ namespace afltk {
 
 	void CynVirtualView::draw()
 	{
-		std::string s = std::to_string((long long)cnt);
+		std::string s = std::to_string((long long)exchange_data.count);
+		fl_rectf(x(), y(), w(), 16, 255, 255, 255);
+		fl_color(0, 0, 0);//font color
 		fl_draw(s.c_str(), s.size(), x() + 5, y() + 12);
 	}
 }
