@@ -11,6 +11,7 @@ using namespace ab;
 namespace afltk {
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 	protected:
+		int cnt;
 		Fl_Thread thread;
 	public:
 		N_StringList lines;

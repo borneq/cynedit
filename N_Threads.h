@@ -19,5 +19,5 @@ namespace ab {
 	typedef pthread_t Fl_Thread;
 	static int n_create_thread(Fl_Thread& t, void *(*f) (void *), void* p)
 }
-#endif /*WIN32*/ 
+#endif /*WIN32*/
 #endif /*N_THREADS_H*/

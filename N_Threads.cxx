@@ -26,4 +26,4 @@ namespace ab {
 	}
 
 }
-#endif /*WIN32*/ 
+#endif /*WIN32*/

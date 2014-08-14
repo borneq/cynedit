@@ -1,3 +1,4 @@
+#include <string>
 #include <FL/fl_draw.H>
 #include <CynVirtualView.h>
 #include <N_Threads.h>
@@ -7,13 +8,19 @@ using namespace ab;
 namespace afltk {
 	void* thread_func(void* p)
 	{
-		sleep(5000);
+		int *cnt = (int *)p;
+		while (true)
+		{
+			(*cnt)++;
+			sleep(500);
+		}
 		return NULL;
 	}
 	/// Constructor.
 	CynVirtualView::CynVirtualView(int X, int Y, int W, int H, const char *L) : Fl_Group(X, Y, W, H, L) {
-		thread = n_create_thread(thread, thread_func, NULL);
-		n_wait_end_thread(thread);
+		cnt = 0;
+		thread = n_create_thread(thread, thread_func, &cnt);
+		//n_wait_end_thread(thread);
 	}
 
 	/// Destructor.
@@ -28,10 +35,7 @@ namespace afltk {
 
 	void CynVirtualView::draw()
 	{
-		fl_draw("111", 3, x() + 5, y() + 12);
-		fl_draw("222", 3, x() + 5, y() + 16*1+ 12);
-		fl_draw("333", 3, x() + 5, y() + 16*2 + 12);
-		fl_draw("444", 3, x() + 5, y() + 16*3 + 12);
-		fl_draw("555", 3, x() + 5, y() + 16*4 + 12);
+		std::string s = std::to_string((long long)cnt);
+		fl_draw(s.c_str(), s.size(), x() + 5, y() + 12);
 	}
 }
