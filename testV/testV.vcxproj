@@ -82,17 +82,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CynView.cxx" />
+    <ClCompile Include="..\CynVirtualView.cxx" />
     <ClCompile Include="..\Fold.cxx" />
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="..\N_File_Stream.cxx" />
     <ClCompile Include="..\N_StringList.cxx" />
     <ClCompile Include="..\N_TextUtil.cxx" />
+    <ClCompile Include="..\N_Threads.cxx" />
     <ClCompile Include="testV.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CynView.h" />
+    <ClInclude Include="..\CynVirtualView.h" />
     <ClInclude Include="..\Fold.h" />
     <ClInclude Include="..\N_StringList.h" />
+    <ClInclude Include="..\N_Threads.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

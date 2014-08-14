@@ -36,16 +36,28 @@
     <ClCompile Include="..\Fold.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CynVirtualView.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\N_Threads.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CynView.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\N_StringList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\CynVirtualView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CynView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\Fold.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Threads.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
