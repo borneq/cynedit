@@ -15,6 +15,7 @@ namespace afltk {
 	struct CVV_Thread_Data
 	{
 		int keep_running;
+		bool painted;
 		Fl_Widget *widget;
 		char *buf;
 		int buf_size;

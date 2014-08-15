@@ -19,11 +19,16 @@ namespace afltk {
 			data->lines->add(line);
 		}
 		Fl::lock(); /* acquire fltk GUI lock */
+		data->painted = false;
 		data->widget->redraw();
 		Fl::unlock(); /* release fltk lock */
 		Fl::awake();
+		while (data->keep_running && !data->painted)
+		{
+			PAUSE(30);
+		}
 		/* This is the thread task */
-		while ((data->keep_running))
+		while (data->keep_running)
 		{
 			PAUSE(30);
 		}
@@ -81,6 +86,7 @@ namespace afltk {
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
 		draw_child(*_hscroll);
+		exchange_data.painted = true;
 	}
 
 	void CynVirtualView::determineCoding()

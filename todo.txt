@@ -8,3 +8,4 @@ T_Stack::peek()
 
 
 Strings - keep pair(char*,len) instead char*
+use _beginthreadex
