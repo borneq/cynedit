@@ -4,6 +4,7 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Scrollbar.H>
+#include <V_PageScrollbar.H>
 #include <N_StringList.h>
 #include <N_Threads.h>
 
@@ -16,10 +17,9 @@ namespace afltk {
 		int count;
 		Fl_Widget *widget;
 	};
-
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 	protected:
-		Fl_Scrollbar *_vscroll;			///< Vertical scrollbar 
+		V_PageScrollbar *_vscroll;			///< Vertical scrollbar 
 		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar 
 		Fl_Thread thread;
 		CVV_Thread_Data exchange_data;

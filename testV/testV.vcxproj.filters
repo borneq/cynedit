@@ -42,6 +42,9 @@
     <ClCompile Include="..\N_Threads.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\V_PageScrollbar.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\N_StringList.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\N_Threads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\V_PageScrollbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

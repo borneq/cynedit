@@ -22,12 +22,20 @@ namespace afltk {
 		}
 	}
 
+	void Scrollbar_CB(Fl_Widget*, void *p) {
+
+	}
+
 	/// Constructor.
 	CynVirtualView::CynVirtualView(int X, int Y, int W, int H, const char *L) : Fl_Group(X, Y, W, H, L) {
-		_vscroll = new Fl_Scrollbar(X+W-16, Y, 16, H-16);		// will be resized by draw()
+		_vscroll = new V_PageScrollbar(X+W-16, Y, 16, H-16);		// will be resized by draw()
 		_vscroll->type(FL_VERTICAL);
+		_vscroll->maximum(100);
+//		_vscroll->linesize(1);
 		_hscroll = new Fl_Scrollbar(X, Y+H-16, W-16, 16);		// will be resized by draw()
 		_hscroll->type(FL_HORIZONTAL);
+		_hscroll->maximum(100);
+		_vscroll->callback(Scrollbar_CB);
 		Fl::lock();
 		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
 		exchange_data.widget = this;

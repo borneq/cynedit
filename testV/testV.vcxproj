@@ -89,6 +89,7 @@
     <ClCompile Include="..\N_StringList.cxx" />
     <ClCompile Include="..\N_TextUtil.cxx" />
     <ClCompile Include="..\N_Threads.cxx" />
+    <ClCompile Include="..\V_PageScrollbar.cxx" />
     <ClCompile Include="testV.cxx" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,7 @@
     <ClInclude Include="..\Fold.h" />
     <ClInclude Include="..\N_StringList.h" />
     <ClInclude Include="..\N_Threads.h" />
+    <ClInclude Include="..\V_PageScrollbar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
