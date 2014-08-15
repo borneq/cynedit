@@ -15,11 +15,11 @@ namespace afltk {
 	struct CVV_Thread_Data
 	{
 		int keep_running;
-		int count;
 		Fl_Widget *widget;
 		char *buf;
 		int buf_size;
 		int coding;
+		T_List<char*> *lines;
 	};
 	const int init_buf_size = 4 * 1024;
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
@@ -34,8 +34,8 @@ namespace afltk {
 		int buf_size;
 		int Bom_type;
 		int coding;
+		T_List<char*> *lines;
 	public:
-		N_StringList lines;
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();
 		int handle(int event);

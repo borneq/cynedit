@@ -2,6 +2,7 @@
 #include <FL/fl_draw.H>
 #include <CynVirtualView.h>
 #include <N_Threads.h>
+#include <N_TextUtil.h>
 
 using namespace ab;
 
@@ -9,16 +10,22 @@ namespace afltk {
 	void thread_func(void* p)
 	{
 		CVV_Thread_Data *data = (CVV_Thread_Data *)p;
-		data->count = 0;
+		int pos = 0;
+		char *line;
+		int blockLine = 0;
+		int endType;
+		while (getNextLine(data->buf, line, pos, endType))
+		{
+			data->lines->add(line);
+		}
+		Fl::lock(); /* acquire fltk GUI lock */
+		data->widget->redraw();
+		Fl::unlock(); /* release fltk lock */
+		Fl::awake();
 		/* This is the thread task */
 		while ((data->keep_running))
 		{
-			data->count++;
-			Fl::lock(); /* acquire fltk GUI lock */
-			data->widget->redraw();
-			Fl::unlock(); /* release fltk lock */
-			Fl::awake();
-			PAUSE(100);
+			PAUSE(30);
 		}
 	}
 
@@ -41,17 +48,19 @@ namespace afltk {
 		buf_size = 0;
 		Bom_type = NO_BOM;
 		coding = 0;
+		lines = new T_List<char*>;
 	}
 
 	/// Destructor.
 	CynVirtualView::~CynVirtualView() {
-		delete stream;
-		free(buf);
-		delete _vscroll;
-		delete _hscroll;
 		Fl::unlock();
 		exchange_data.keep_running = 0; /* make any pending threads expire */;
 		n_wait_end_thread(thread);
+		delete stream;
+		delete lines;
+		free(buf);
+		delete _vscroll;
+		delete _hscroll;
 	}
 
 	int CynVirtualView::handle(int event)
@@ -62,11 +71,13 @@ namespace afltk {
 
 	void CynVirtualView::draw()
 	{
-		std::string s = std::to_string((long long)exchange_data.count);
-		fl_rectf(x(), y(), w(), 16, 255, 255, 255);
-		fl_color(0, 0, 0);//font color
-		fl_draw(s.c_str(), s.size(), x() + 5, y() + 12);
-		_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
+		for (int i = 0; i < lines->size(); i++)
+		{
+			fl_rectf(x(), y()+i*16, w(), 16, 255, 255, 255);
+			fl_color(0, 0, 0);//font color
+			fl_draw(lines->at(i), strlen(lines->at(i)), x() + 5, y() + i * 16 + 12);
+		}
+     	_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
 		draw_child(*_hscroll);
@@ -94,8 +105,9 @@ namespace afltk {
 	{
 		N_File_Stream *stream = new N_File_Stream(fileName, L"rb");
 		buf_size = (int)min(init_buf_size, stream->get_size());
-		buf = (char*)malloc(buf_size);
+		buf = (char*)malloc(buf_size+1);
 		stream->read(buf, buf_size);
+		buf[buf_size] = 0;
 		determineCoding();
 		initThread();
 	}
@@ -108,6 +120,7 @@ namespace afltk {
 		exchange_data.buf = buf;
 		exchange_data.buf_size = buf_size;
 		exchange_data.coding = coding;
+		exchange_data.lines = lines;
 		thread = n_create_thread(thread_func, (void *)(&exchange_data));
 	}
 }

@@ -7,5 +7,4 @@ T_Stack::is_empty()
 T_Stack::peek()
 
 
-
-block insert and block del not duplicate memmove/memcpy operation if shrinks
+Strings - keep pair(char*,len) instead char*

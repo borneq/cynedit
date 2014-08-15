@@ -204,6 +204,7 @@ public:
 	inline int size(){return _size;}
 	inline int capacity(){return _capacity;}
 	inline T operator[](int n) {return _list[n];}
+	inline T at(int n) { return _list[n]; }
 	T_List(bool auto_shrink=false)
 	{
 		_list=NULL;
