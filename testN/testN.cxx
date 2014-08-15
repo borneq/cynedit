@@ -187,6 +187,6 @@ void test_utf8()
 }
 
 int main(int argc, char** argv) {	
-	test_utf8();
-	getchar();
+	//test_utf8();
+	//getchar();
 }

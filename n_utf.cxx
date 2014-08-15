@@ -2,6 +2,10 @@
 #include <n_utf.h>
 #include <cstring>
 #include <stdlib.h>
+#ifdef WIN32
+#include <Windows.h>
+#else
+#endif
 
 namespace ab {
 /*! Decode a single UTF-8 encoded character starting at \e start
@@ -309,5 +313,31 @@ bool isUTF8(char *buf, int buflen)
 	}
 	return UTFcnt > nonUTFcnt;
 }
+
+#ifdef WIN32
+int len_locale_to_utf16(char *utf8, int utf8len)
+{
+	return MultiByteToWideChar(CP_ACP, 0, utf8, utf8len, NULL, 0);
+}
+
+int locale_to_utf16(char *utf8, int utf8len, wchar_t *utf16, int utf16len)
+{
+	return MultiByteToWideChar(CP_ACP, 0, utf8, utf8len, utf16, utf16len);
+}
+
+int len_utf16_to_locale(wchar_t *utf16, int utf16len)
+{
+	return WideCharToMultiByte(CP_ACP, 0, utf16, utf16len, NULL, 0, NULL, NULL);
+}
+
+int utf16_to_locale(wchar_t *utf16, int utf16len, char *utf8, int utf8len)
+{
+	return WideCharToMultiByte(CP_ACP, 0, utf16, utf16len, utf8, utf8len, NULL, NULL);
+}
+
+#else
+iconv_open , nl_langinfo
+#endif
+
 
 }

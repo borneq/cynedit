@@ -1,4 +1,12 @@
+#ifndef N_Utf_h
+#define N_Utf_h
+
 namespace ab {
+	const int NO_BOM = 0;
+	const int BOM_UTF8 = 1;
+	const int CODING_LOCALE = 1;
+	const int CODING_UTF8 = 1;
+
 	unsigned long utf8to32_one(const char *start, int *len, int maxlen);
 	int utf32to8_one(unsigned ucs, char* buf);
 	int lenUtf8_one(unsigned ucs);
@@ -15,3 +23,5 @@ namespace ab {
 	wchar_t *allocUtf16for8(const char *utf8);
 	bool isUTF8(char *buf, int buflen);
 }
+
+#endif /*N_Utf_h*/

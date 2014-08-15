@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
   Fl_Menu_Bar menubar(0,0,window.w(),20);
   menubar.menu(menutable);
   CynVirtualView viewer(50,40,125,125);
+  viewer.setFile(L"c:\\temp\\test.txt");
   //viewer.lines.loadFromFile(L"c:\\temp\\cyntest.cpp");
 	  //(L"../CynView.cxx");
   window.resizable(viewer);

@@ -45,6 +45,9 @@
     <ClCompile Include="..\V_PageScrollbar.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\N_Utf.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\N_StringList.h">

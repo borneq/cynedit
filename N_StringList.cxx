@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <N_StringList.h>
 #include <N_File_Stream.h>
 #include <N_TextUtil.h>
@@ -15,8 +14,8 @@ void N_StringList::loadFromFile(wchar_t *fileName)
 {
 	N_File_Stream stream(fileName, L"rb");
 	loadFromStream(stream);
-
 }
+
 void N_StringList::loadFromStream(N_Stream &stream)
 {
 	int endingsCounts[4];

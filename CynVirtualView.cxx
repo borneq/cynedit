@@ -36,14 +36,17 @@ namespace afltk {
 		_hscroll->type(FL_HORIZONTAL);
 		_hscroll->maximum(100);
 		_vscroll->callback(Scrollbar_CB);
-		Fl::lock();
-		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
-		exchange_data.widget = this;
-		thread = n_create_thread(thread_func, (void *)(&exchange_data));
+		stream = NULL;
+		buf = NULL;
+		buf_size = 0;
+		Bom_type = NO_BOM;
+		coding = 0;
 	}
 
 	/// Destructor.
 	CynVirtualView::~CynVirtualView() {
+		delete stream;
+		free(buf);
 		delete _vscroll;
 		delete _hscroll;
 		Fl::unlock();
@@ -67,5 +70,44 @@ namespace afltk {
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
 		draw_child(*_hscroll);
+	}
+
+	void CynVirtualView::determineCoding()
+	{
+		if (buf_size >= sizeof(BOM_UTF8_DATA))
+		{
+			if (memcmp(buf, BOM_UTF8_DATA, sizeof(BOM_UTF8_DATA)) == 0)
+				Bom_type = BOM_UTF8;
+			else
+				Bom_type = NO_BOM;
+		}
+		else Bom_type = NO_BOM;
+		if (Bom_type == BOM_UTF8)
+			coding = CODING_UTF8;
+		else if (isUTF8(buf, buf_size))
+			coding = CODING_UTF8;
+		else
+			coding = CODING_LOCALE;
+	}
+
+	void CynVirtualView::setFile(const wchar_t *fileName)
+	{
+		N_File_Stream *stream = new N_File_Stream(fileName, L"rb");
+		buf_size = (int)min(init_buf_size, stream->get_size());
+		buf = (char*)malloc(buf_size);
+		stream->read(buf, buf_size);
+		determineCoding();
+		initThread();
+	}
+
+	void CynVirtualView::initThread()
+	{
+		Fl::lock();
+		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
+		exchange_data.widget = this;
+		exchange_data.buf = buf;
+		exchange_data.buf_size = buf_size;
+		exchange_data.coding = coding;
+		thread = n_create_thread(thread_func, (void *)(&exchange_data));
 	}
 }

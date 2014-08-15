@@ -89,6 +89,7 @@
     <ClCompile Include="..\N_StringList.cxx" />
     <ClCompile Include="..\N_TextUtil.cxx" />
     <ClCompile Include="..\N_Threads.cxx" />
+    <ClCompile Include="..\N_Utf.cxx" />
     <ClCompile Include="..\V_PageScrollbar.cxx" />
     <ClCompile Include="testV.cxx" />
   </ItemGroup>
