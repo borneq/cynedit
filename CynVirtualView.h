@@ -19,8 +19,8 @@ namespace afltk {
 	};
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 	protected:
-		V_PageScrollbar *_vscroll;			///< Vertical scrollbar 
-		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar 
+		V_PageScrollbar *_vscroll;			///< Vertical scrollbar
+		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar
 		Fl_Thread thread;
 		CVV_Thread_Data exchange_data;
 	public:

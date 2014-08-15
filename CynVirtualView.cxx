@@ -63,7 +63,7 @@ namespace afltk {
 		fl_rectf(x(), y(), w(), 16, 255, 255, 255);
 		fl_color(0, 0, 0);//font color
 		fl_draw(s.c_str(), s.size(), x() + 5, y() + 12);
-		_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);		
+		_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
 		draw_child(*_hscroll);

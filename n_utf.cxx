@@ -259,4 +259,55 @@ wchar_t *allocUtf16for8(const char *utf8)
 	utf8to16(utf8, len, wbuf);
 	return wbuf;
 }
+
+//auxiliary function to isUTF8
+void nextByteUTF8(char *buf, int &pos, int d, int &UTFcnt, int &nonUTFcnt)
+{
+	pos++;
+	unsigned char c = buf[pos];
+	if (c >= 0x80 && c <= 0xBF)
+	{
+		if (d == 0) UTFcnt++;
+	}
+	else nonUTFcnt++;
+}
+
+bool isUTF8(char *buf, int buflen)
+{
+	int UTFcnt = 0, nonUTFcnt = 0;
+	int i=0;
+	int d;
+	while (i < buflen)
+	{
+		unsigned char c = buf[i];
+		if (c < 0x7F); //Latin: nothing do
+		else if (c >= 0xC0 && c <= 0xDF)// 110xxxxx 10xxxxxx
+		{
+			if (i+1 < buflen) nextByteUTF8(buf, i, 0, UTFcnt, nonUTFcnt);
+		}
+		else if (c >= 0xE0 && c <= 0xEF) // 1110xxxx 10xxxxxx 10xxxxxx
+		{
+		    d = 1;
+			while (i + 1 < buflen && d >= 0)
+			{
+				nextByteUTF8(buf, i, d, UTFcnt, nonUTFcnt);
+				d--;
+			}
+		}
+		else if (c >= 0xF0 && c <= 0xF7)  // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+		{
+			d = 1;
+			while (i + 1 < buflen && d >= 0)
+			{
+				nextByteUTF8(buf, i, d, UTFcnt, nonUTFcnt);
+				d--;
+			}
+		}
+		else
+			nonUTFcnt++;
+		i++;
+	}
+	return UTFcnt > nonUTFcnt;
+}
+
 }

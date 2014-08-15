@@ -8,6 +8,7 @@
 #include <N_StringList.h>
 #include <N_TextUtil.h>
 #include <N_Base_List.h>
+#include <N_Utf.h>
 
 using namespace ab;
 
@@ -168,7 +169,24 @@ void test_insert()
 		printf("%d ", list[i]);
 }
 
+bool isUTF8file(const wchar_t *filename)
+{
+	N_File_Stream *stream = new N_File_Stream(filename, L"r");
+	int size = std::min(4 * 1024, (int)stream->get_size());
+	char *buf = (char*)malloc(size);
+	stream->read(buf, size);
+	delete stream;
+	bool result = isUTF8(buf, size);
+	free(buf);
+	return result;
+}
+
+void test_utf8()
+{
+	isUTF8file(L"c:\\temp\\bigSample.txt");
+}
+
 int main(int argc, char** argv) {	
-	test_insert();
-	//getchar();
+	test_utf8();
+	getchar();
 }

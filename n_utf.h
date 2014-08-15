@@ -13,4 +13,5 @@ namespace ab {
 	int utf16to8(const wchar_t *utf16, int utf16len, char *utf8);
 	int lenUtf8to16(const char *utf8, int utf8len);
 	wchar_t *allocUtf16for8(const char *utf8);
+	bool isUTF8(char *buf, int buflen);
 }
