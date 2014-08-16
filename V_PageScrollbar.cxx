@@ -28,6 +28,7 @@
 void V_PageScrollbar::increment_cb() {
   char inv = maximum()<minimum();
   int ls = inv ? -linesize_ : linesize_;
+  int ps = inv ? -pagesize_ : pagesize_;
   int i;
   switch (pushed_) {
     case 1: // clicked on arrow left
@@ -37,20 +38,10 @@ void V_PageScrollbar::increment_cb() {
       i =  ls;
       break;
     case 5: // clicked into the box next to the slider on the left
-      i = -(int((maximum()-minimum())*slider_size()/(1.0-slider_size())));
-      if (inv) {
-        if (i<-ls) i = -ls;
-      } else {
-        if (i>-ls) i = -ls; // err
-      }
+	  i = -ps;
       break;
     case 6: // clicked into the box next to the slider on the right
-      i = (int((maximum()-minimum())*slider_size()/(1.0-slider_size())));
-      if (inv) {
-        if (i>ls) i = ls;
-      } else {
-        if (i<ls) i = ls; // err
-      }
+	  i = ps;
       break;
   }
   handle_drag(clamp(value() + i));
@@ -266,6 +257,7 @@ V_PageScrollbar::V_PageScrollbar(int X, int Y, int W, int H, const char* L)
   color(FL_DARK2);
   slider(FL_UP_BOX);
   linesize_ = 1;
+  pagesize_ = 16;
   maximum(100);
   pushed_ = 0;
   step(1);
@@ -276,8 +268,3 @@ V_PageScrollbar::~V_PageScrollbar() {
   if (pushed_)
     Fl::remove_timeout(timeout_cb, this);
 }
-
-
-//
-// End of "$Id: V_PageScrollbar.cxx 8864 2011-07-19 04:49:30Z greg.ercolano $".
-//

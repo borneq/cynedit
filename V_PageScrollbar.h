@@ -43,6 +43,7 @@
 class FL_EXPORT V_PageScrollbar : public Fl_Slider {
 
   int linesize_;
+  int pagesize_;
   int pushed_;
   static void timeout_cb(void*);
   void increment_cb();
