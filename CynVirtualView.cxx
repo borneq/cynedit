@@ -36,7 +36,9 @@ namespace afltk {
 		CynVirtualView* view = (CynVirtualView*)p;
 		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
 		view->filePos = (long long)((double)scroll->value() / (scroll->maximum() - scroll->minimum())*view->stream->get_size());
-		printf("%d\n", view->filePos);
+		printf("%d\n", scroll->value());
+		view->read_buf();
+		view->redraw();
 	}
 
 	void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
@@ -96,7 +98,7 @@ namespace afltk {
 		int ymax = y()+h() - 16; //-16 for _hscroll height afer _hscroll resize
 		int pos = 0;
 		if (Bom_type == BOM_UTF8)
-			pos = sizeof(BOM_UTF8_DATA);
+			pos = (int)max(sizeof(BOM_UTF8_DATA)-filePos, 0);
 		else
 			pos = 0;
 		char *line;
@@ -118,7 +120,7 @@ namespace afltk {
 		for (int i = 0; i < lines->size(); i++)
 			free(lines->at(i));
 		lines->clear();
-		_vscroll->slider_size( (double)pos / buf_size );
+		_vscroll->slider_size( (double)pos / stream->get_size() );
      	_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
@@ -148,8 +150,8 @@ namespace afltk {
 		stream = new N_File_Stream(fileName, L"rb");
 		buf_size = (int)min(init_buf_size, stream->get_size());
 		buf = (char*)malloc(buf_size+1);
-		stream->read(buf, buf_size);
-		buf[buf_size] = 0;
+		filePos = 0;
+		read_buf();
 		determineCoding();
 		//initThread();
 	}
@@ -166,5 +168,12 @@ namespace afltk {
 		exchange_data.coding = coding;
 		exchange_data.lines = lines;
 		thread = n_create_thread(thread_func, (void *)(&exchange_data));
+	}
+
+	void CynVirtualView::read_buf()
+	{
+		stream->set_position(filePos);
+		int numread = stream->read(buf, buf_size);
+		buf[numread] = 0;
 	}
 }

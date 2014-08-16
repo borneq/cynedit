@@ -40,6 +40,7 @@ namespace afltk {
 		int coding;
 		T_List<char*> *lines;
 		long long filePos;
+		void read_buf();
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();
