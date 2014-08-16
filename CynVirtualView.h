@@ -15,8 +15,9 @@ namespace afltk {
 	struct CVV_Thread_Data
 	{
 		int keep_running;
-		bool painted;
 		Fl_Widget *widget;
+		V_PageScrollbar *vscroll;
+		int ymax;
 		char *buf;
 		int buf_size;
 		int coding;

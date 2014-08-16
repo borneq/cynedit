@@ -1,7 +1,3 @@
-V_PageScrollbar
-
-T_List::block_insert(int index, int count)
-T_List::del(int index, int count=1)
 T_List::delAtEnd(int count=1)
 T_List::pack_capacity()
 T_List::pack_zero()
