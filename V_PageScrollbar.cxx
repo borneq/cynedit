@@ -26,6 +26,7 @@
 #define REPEAT .05
 
 void V_PageScrollbar::increment_cb() {
+  VPS_Increment inc;
   char inv = maximum()<minimum();
   int ls = inv ? -linesize_ : linesize_;
   int ps = inv ? -pagesize_ : pagesize_;
@@ -44,7 +45,10 @@ void V_PageScrollbar::increment_cb() {
 	  i = ps;
       break;
   }
-  handle_drag(clamp(value() + i));
+  inc.pushed = pushed_;
+  inc.delta = i;
+  if (callbackScroll_) callbackScroll_(this, &inc);
+  handle_drag(clamp(value() + inc.delta));
 }
 
 void V_PageScrollbar::timeout_cb(void* v) {
@@ -260,6 +264,7 @@ V_PageScrollbar::V_PageScrollbar(int X, int Y, int W, int H, const char* L)
   pagesize_ = 16;
   maximum(100);
   pushed_ = 0;
+  callbackScroll_ = NULL;
   step(1);
 }
 
@@ -268,3 +273,6 @@ V_PageScrollbar::~V_PageScrollbar() {
   if (pushed_)
     Fl::remove_timeout(timeout_cb, this);
 }
+
+/** Sets the additional callback */
+void V_PageScrollbar::callbackScroll(Fl_Callback* cb) { callbackScroll_ = cb; }

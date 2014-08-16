@@ -1,6 +1,3 @@
-//
-// "$Id: V_PageScrollbar.H 9116 2011-10-02 06:25:13Z matt $"
-//
 // Scroll bar header file for the Fast Light Tool Kit (FLTK).
 //
 // Copyright 1998-2010 by Bill Spitzak and others.
@@ -40,6 +37,11 @@
   \image html  scrollbar.png
   \image latex scrollbar.png "V_PageScrollbar" width=4cm
 */
+struct VPS_Increment {
+	int pushed;
+	int delta;
+};
+
 class FL_EXPORT V_PageScrollbar : public Fl_Slider {
 
   int linesize_;
@@ -47,9 +49,9 @@ class FL_EXPORT V_PageScrollbar : public Fl_Slider {
   int pushed_;
   static void timeout_cb(void*);
   void increment_cb();
+  Fl_Callback* callbackScroll_;
 protected:
   void draw();
-
 public:
 
   V_PageScrollbar(int X,int Y,int W,int H, const char *L = 0);
@@ -103,6 +105,11 @@ public:
   */
   void linesize(int i) {linesize_ = i;}
 
+  int pagesize() const { return pagesize_; }
+
+  void pagesize(int i) { pagesize_ = i; }
+
+  void callbackScroll(Fl_Callback* cb);
 };
 
 #endif
