@@ -1,3 +1,5 @@
+V_PageScrollbar
+
 T_List::block_insert(int index, int count)
 T_List::del(int index, int count=1)
 T_List::delAtEnd(int count=1)
@@ -8,4 +10,5 @@ T_Stack::peek()
 
 
 Strings - keep pair(char*,len) instead char*
+getNextLine - must return line len
 use _beginthreadex

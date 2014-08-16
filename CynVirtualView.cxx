@@ -42,12 +42,14 @@ namespace afltk {
 	CynVirtualView::CynVirtualView(int X, int Y, int W, int H, const char *L) : Fl_Group(X, Y, W, H, L) {
 		_vscroll = new V_PageScrollbar(X+W-16, Y, 16, H-16);		// will be resized by draw()
 		_vscroll->type(FL_VERTICAL);
-		_vscroll->maximum(100);
-//		_vscroll->linesize(1);
+		/*_vscroll->maximum(100);
+		_vscroll->linesize(1);
+		_vscroll->pagesize(20);*/
+		_vscroll->callback(Scrollbar_CB);
 		_hscroll = new Fl_Scrollbar(X, Y+H-16, W-16, 16);		// will be resized by draw()
 		_hscroll->type(FL_HORIZONTAL);
 		_hscroll->maximum(100);
-		_vscroll->callback(Scrollbar_CB);
+
 		stream = NULL;
 		buf = NULL;
 		buf_size = 0;

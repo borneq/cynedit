@@ -337,6 +337,8 @@ int utf16_to_locale(wchar_t *utf16, int utf16len, char *utf8, int utf8len)
 
 #else
 iconv_open , nl_langinfo
+http ://www.gnu.org/software/libc/manual/html_node/Generic-Conversion-Interface.html
+http ://www.gnu.org/software/libc/manual/html_node/iconv-Examples.html
 #endif
 
 
