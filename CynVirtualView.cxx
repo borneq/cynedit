@@ -34,7 +34,9 @@ namespace afltk {
 	void Scrollbar_CB(Fl_Widget* w, void *p)
 	{
 		CynVirtualView* view = (CynVirtualView*)p;
-		printf("cb\n");
+		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
+		view->filePos = (long long)((double)scroll->value() / (scroll->maximum() - scroll->minimum())*view->stream->get_size());
+		printf("%d\n", view->filePos);
 	}
 
 	void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
@@ -90,6 +92,7 @@ namespace afltk {
 			exchange_data.paintState = NEED_THREAD_JOB;//when resize
 			return;
 		}*/
+		fl_font(FL_COURIER, 12);
 		int ymax = y()+h() - 16; //-16 for _hscroll height afer _hscroll resize
 		int pos = 0;
 		if (Bom_type == BOM_UTF8)
@@ -142,7 +145,7 @@ namespace afltk {
 
 	void CynVirtualView::setFile(const wchar_t *fileName)
 	{
-		N_File_Stream *stream = new N_File_Stream(fileName, L"rb");
+		stream = new N_File_Stream(fileName, L"rb");
 		buf_size = (int)min(init_buf_size, stream->get_size());
 		buf = (char*)malloc(buf_size+1);
 		stream->read(buf, buf_size);
