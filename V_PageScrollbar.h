@@ -42,6 +42,8 @@ struct VPS_Increment {
 	int delta;
 };
 
+typedef void (Scroll_Callback)(Fl_Widget*, void*, VPS_Increment*);
+
 class FL_EXPORT V_PageScrollbar : public Fl_Slider {
 
   int linesize_;
@@ -49,7 +51,8 @@ class FL_EXPORT V_PageScrollbar : public Fl_Slider {
   int pushed_;
   static void timeout_cb(void*);
   void increment_cb();
-  Fl_Callback* callbackScroll_;
+  Scroll_Callback* callbackScroll_;
+  void *user_data_scroll;
 protected:
   void draw();
 public:
@@ -104,12 +107,9 @@ public:
     minus one linesize().  The default is 16.
   */
   void linesize(int i) {linesize_ = i;}
-
   int pagesize() const { return pagesize_; }
-
   void pagesize(int i) { pagesize_ = i; }
-
-  void callbackScroll(Fl_Callback* cb);
+  void callbackScroll(Scroll_Callback* cb, void* p);
 };
 
 #endif

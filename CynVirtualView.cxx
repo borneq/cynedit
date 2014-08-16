@@ -31,7 +31,16 @@ namespace afltk {
 		}
 	}
 
-	void Scrollbar_CB(Fl_Widget*, void *p) {
+	void Scrollbar_CB(Fl_Widget* w, void *p)
+	{
+		CynVirtualView* view = (CynVirtualView*)p;
+		printf("cb\n");
+	}
+
+	void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
+	{
+		CynVirtualView* view = (CynVirtualView*)p;
+		printf("cb\n");
 	}
 
 	/// Constructor.
@@ -41,7 +50,8 @@ namespace afltk {
 		_vscroll->maximum(100);
 		_vscroll->linesize(1);
 		_vscroll->pagesize(20);
-		_vscroll->callbackScroll(Scrollbar_CB);
+		_vscroll->callback(Scrollbar_CB, (void*)this);
+		_vscroll->callbackScroll(Scrollbar_CB1, (void*)this);
 		_hscroll = new Fl_Scrollbar(X, Y+H-16, W-16, 16);		// will be resized by draw()
 		_hscroll->type(FL_HORIZONTAL);
 		_hscroll->maximum(100);

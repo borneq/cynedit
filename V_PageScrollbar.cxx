@@ -47,8 +47,10 @@ void V_PageScrollbar::increment_cb() {
   }
   inc.pushed = pushed_;
   inc.delta = i;
-  if (callbackScroll_) callbackScroll_(this, &inc);
+  if (callbackScroll_) callbackScroll_(this, user_data_scroll, &inc);
+  when(FL_WHEN_NEVER); //don't call usual callback because call new callback
   handle_drag(clamp(value() + inc.delta));
+  when(FL_WHEN_CHANGED);
 }
 
 void V_PageScrollbar::timeout_cb(void* v) {
@@ -275,4 +277,4 @@ V_PageScrollbar::~V_PageScrollbar() {
 }
 
 /** Sets the additional callback */
-void V_PageScrollbar::callbackScroll(Fl_Callback* cb) { callbackScroll_ = cb; }
+void V_PageScrollbar::callbackScroll(Scroll_Callback* cb, void* p) { callbackScroll_ = cb; user_data_scroll = p; }
