@@ -36,15 +36,15 @@ namespace afltk {
 		CynVirtualView* view = (CynVirtualView*)p;
 		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
 		view->filePos = (long long)((double)scroll->value() / (scroll->maximum() - scroll->minimum())*view->stream->get_size());
-		printf("%d\n", scroll->value());
-		view->read_buf();
+		view->lineFilePos = (int)(view->numVisibleLines*(double)scroll->value() / (scroll->maximum() - scroll->minimum()));
 		view->redraw();
 	}
 
 	void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
 	{
-		CynVirtualView* view = (CynVirtualView*)p;
-		printf("cb\n");
+		//CynVirtualView* view = (CynVirtualView*)p;
+		//printf("cb\n");
+		//Scrollbar_CB(w, p);
 	}
 
 	/// Constructor.
@@ -66,6 +66,8 @@ namespace afltk {
 		Bom_type = NO_BOM;
 		coding = 0;
 		lines = new T_List<char*>;
+		numVisibleLines = getNumVisibleLines();
+		estimatedLineSize = 100;
 	}
 
 	/// Destructor.
@@ -86,6 +88,20 @@ namespace afltk {
 		return 1;
 	}
 
+	int CynVirtualView::findFirstVisibleLine()
+	{
+		int i = max(deltaFilePos, 0); //deltaFilePos can be <0 if BOM
+		int line = lineFilePos;
+		backToBeginLine(buf, i);
+		while (line>0)
+		{
+			i--;
+			backToBeginLine(buf, i);
+			line--;
+		}
+		return i;
+	}
+
 	void CynVirtualView::draw()
 	{
 		/*if (exchange_data.paintState != NEED_PAINT)
@@ -94,33 +110,32 @@ namespace afltk {
 			exchange_data.paintState = NEED_THREAD_JOB;//when resize
 			return;
 		}*/
-		fl_font(FL_COURIER, 12);
+		numVisibleLines = getNumVisibleLines();
+		read_buf();
+		int pos = findFirstVisibleLine();
+		int pos0 = pos;
 		int ymax = y()+h() - 16; //-16 for _hscroll height afer _hscroll resize
-		int pos = 0;
-		if (Bom_type == BOM_UTF8)
-			pos = (int)max(sizeof(BOM_UTF8_DATA)-filePos, 0);
-		else
-			pos = 0;
 		char *line;
 		int blockLine = 0;
 		int endType;
 		int posY = y();
-		while (getNextLine(buf, line, pos, endType))
+		while (posY < ymax && getNextLine(buf, line, pos, endType))
 		{
 			lines->add(line);
 			posY += 16;
-			if (posY >= ymax) break;
 		}
+		fl_font(FL_COURIER, 12);
 		for (int i = 0; i < lines->size(); i++)
 		{
-			fl_rectf(x(), y()+i*16, w(), 16, 255, 255, 255);
+			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
 			fl_color(0, 0, 0);//font color
 			fl_draw(lines->at(i), strlen(lines->at(i)), x() + 5, y() + i * 16 + 12);
 		}
 		for (int i = 0; i < lines->size(); i++)
 			free(lines->at(i));
 		lines->clear();
-		_vscroll->slider_size( (double)pos / stream->get_size() );
+		fl_rectf(x(),posY, w(), y()+h()-16-posY, 255, 255, 255);//draw remaining area
+		_vscroll->slider_size( (double)(pos-pos0) / stream->get_size() );
      	_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
@@ -148,9 +163,9 @@ namespace afltk {
 	void CynVirtualView::setFile(const wchar_t *fileName)
 	{
 		stream = new N_File_Stream(fileName, L"rb");
-		buf_size = (int)min(init_buf_size, stream->get_size());
-		buf = (char*)malloc(buf_size+1);
 		filePos = 0;
+		lineFilePos = 0;
+		_vscroll->value(0);
 		read_buf();
 		determineCoding();
 		//initThread();
@@ -172,7 +187,16 @@ namespace afltk {
 
 	void CynVirtualView::read_buf()
 	{
-		stream->set_position(filePos);
+		buf_size = (int)min(estimatedLineSize*(numVisibleLines+1), stream->get_size());
+		free(buf);
+		buf = (char*)malloc(buf_size + 1);
+		int start;
+		if (Bom_type == BOM_UTF8)
+			start = sizeof(BOM_UTF8_DATA);
+		else
+			start = 0;
+		deltaFilePos = (int)min(estimatedLineSize*(lineFilePos+1), filePos - start);
+		stream->set_position(filePos - deltaFilePos);
 		int numread = stream->read(buf, buf_size);
 		buf[numread] = 0;
 	}

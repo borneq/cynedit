@@ -23,7 +23,6 @@ namespace afltk {
 		int coding;
 		T_List<char*> *lines;
 	};
-	const int init_buf_size = 4 * 1024;
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 		friend void Scrollbar_CB(Fl_Widget* w, void *p);
@@ -40,7 +39,13 @@ namespace afltk {
 		int coding;
 		T_List<char*> *lines;
 		long long filePos;
+		int lineFilePos;
+		int deltaFilePos;
+		int numVisibleLines;
+		int estimatedLineSize;
 		void read_buf();
+		int findFirstVisibleLine();
+		inline int getNumVisibleLines(){ return max(0, (h() - 16) / 16); }
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();

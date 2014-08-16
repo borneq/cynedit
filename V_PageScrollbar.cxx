@@ -47,10 +47,10 @@ void V_PageScrollbar::increment_cb() {
   }
   inc.pushed = pushed_;
   inc.delta = i;
-  if (callbackScroll_) callbackScroll_(this, user_data_scroll, &inc);
-  when(FL_WHEN_NEVER); //don't call usual callback because call new callback
+  //if (callbackScroll_) callbackScroll_(this, user_data_scroll, &inc);
+  //when(FL_WHEN_NEVER); //don't call usual callback because call new callback
   handle_drag(clamp(value() + inc.delta));
-  when(FL_WHEN_CHANGED);
+  //when(FL_WHEN_CHANGED);
 }
 
 void V_PageScrollbar::timeout_cb(void* v) {

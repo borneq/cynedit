@@ -36,6 +36,21 @@ char *head,*tail;
   return true;
 }
 
+void backToBeginLine(char *text, int &pos)
+{
+	if (text[pos]==10 && pos-1>=0 && text[pos-1]==13) pos--;
+	if (pos>0 &&(text[pos]==13 || text[pos]==10)) pos--;
+	while (pos >= 0)
+	{
+		if (text[pos]==13 || text[pos]==10)
+		{
+			break;
+		}
+		pos--;
+	}
+	pos++;
+}
+
 //alloc space to lineA+lineB ana dfree lineA,lineB
 char *mergeLines(char *lineA, char *lineB)
 {
