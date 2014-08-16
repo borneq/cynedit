@@ -265,7 +265,8 @@ V_PageScrollbar::V_PageScrollbar(int X, int Y, int W, int H, const char* L)
   box(FL_FLAT_BOX);
   color(FL_DARK2);
   slider(FL_UP_BOX);
-  linesize_ = 16;
+  linesize_ = 1;
+  maximum(100);
   pushed_ = 0;
   step(1);
 }
