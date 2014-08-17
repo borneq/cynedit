@@ -84,7 +84,7 @@ namespace afltk {
 		int blockLine = 0;
 		int endType;
 		int posY = y();
-		while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType))
+		while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
 			lines->add(line);
 			posY += 16;
@@ -94,7 +94,7 @@ namespace afltk {
 		{
 			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
 			fl_color(0, 0, 0);//font color
-			fl_draw(lines->at(i), strlen(lines->at(i)), x() + 5, y() + i * 16 + 12);
+			fl_draw(lines->at(i), min(100,strlen(lines->at(i))), x() + 5, y() + i * 16 + 12);
 		}
 		for (int i = 0; i < lines->size(); i++)
 			free(lines->at(i));

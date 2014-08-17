@@ -14,6 +14,7 @@ using namespace ab;
 
 namespace afltk {
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
+	const int MaxLineLen = 10;
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 		friend void Scrollbar_CB(Fl_Widget* w, void *p);
 		friend void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc);
