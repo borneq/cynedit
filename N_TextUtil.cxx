@@ -69,9 +69,7 @@ char *head,*tail;
 	  else if (*p>=0xF8 && *p<=0xFB) need_d=4; //111110xx
 	  else if (*p>=0xFC) need_d=5; //1111110x
 	  else need_d=0;
-	  printf("d=%d need_d=%d\n",d,need_d);
 	  if (d<need_d && (char*)p>head) tail = (char*)p;
-
     /*
 		0xxxxxxx
 		110xxxxx	10xxxxxx
