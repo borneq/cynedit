@@ -48,6 +48,9 @@
     <ClCompile Include="..\N_Utf.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\N_Mapping.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\N_StringList.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\V_PageScrollbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Mapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

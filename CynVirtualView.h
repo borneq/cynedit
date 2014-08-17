@@ -8,6 +8,7 @@
 #include <N_StringList.h>
 #include <N_Threads.h>
 #include <N_File_Stream.h>
+#include <N_Mapping.h>
 
 using namespace ab;
 
@@ -19,19 +20,20 @@ namespace afltk {
 	protected:
 		V_PageScrollbar *_vscroll;			///< Vertical scrollbar
 		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar
-		Fl_Thread thread;
-		N_File_Stream *stream;
-		char *buf;
-		int buf_size;
+		N_Mapping *mapObj;
+		char *map;
+		int request_mapsize;
+		int current_mapsize;
+		long long mappos;
+		int startmappos;
 		int Bom_type;
 		int coding;
 		T_List<char*> *lines;
 		long long filePos;
 		int lineFilePos;
-		int deltaFilePos;
 		int numVisibleLines;
-		int estimatedLineSize;
-		void read_buf();
+		void init_map(const wchar_t *fileName);
+		void update_map();
 		int findFirstVisibleLine();
 		inline int getNumVisibleLines(){ return max(0, (h() - 16) / 16); }
 	public:
