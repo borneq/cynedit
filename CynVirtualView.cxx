@@ -59,17 +59,17 @@ namespace afltk {
 
 	int CynVirtualView::findFirstVisibleLine()
 	{
-		int i = startmappos;
-		int line = lineFilePos;
-		backToBeginLine(map, i);
-		while (line>0)
-		{
-			i--;
-			backToBeginLine(map, i);
-			line--;
-		}
+		int i = startMappos;
+		backToBeginLines(map, i, lineFilePos+1, (lineFilePos+2)*MaxLineLen);
 		if (mappos==0 && Bom_type==BOM_UTF8 && i<sizeof(BOM_UTF8_DATA))
 			i=sizeof(BOM_UTF8_DATA);
+		if (startMappos-i>(lineFilePos+1)*MaxLineLen)
+		{
+			char *line;
+			int endType;
+			getNextLine(map, current_mapsize, line, i, endType, MaxLineLen, coding==CODING_UTF8);
+			free(line);
+		}
 		return i;
 	}
 
@@ -83,12 +83,31 @@ namespace afltk {
 		char *line;
 		int blockLine = 0;
 		int endType;
-		int posY = y();
+		while (/*posY < ymax && */getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
+		{
+			lines->add(line);
+			//posY += 16;
+			if (pos>startMappos || pos==current_mapsize) break;
+		}
+		int loopcnt = lines->size()-lineFilePos-1;
+		for (int i = 0; i < loopcnt; i++)
+		{
+			free(lines->at(0));
+			lines->del(0);
+		}
+		assert(lines->size() == lineFilePos+1);
+		if (lineFilePos==numVisibleLines)
+		{
+			free(lines->at(0));
+			lines->del(0);
+		}
+		int posY = y()+16*lines->size();
 		while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
 			lines->add(line);
 			posY += 16;
 		}
+
 		fl_font(FL_COURIER, 12);
 		for (int i = 0; i < lines->size(); i++)
 		{
@@ -138,7 +157,7 @@ namespace afltk {
 			mappos = (filePos-request_mapsize/2)/mapObj->granul()*mapObj->granul();
 		}
 		assert(filePos>=mappos && filePos-mappos<request_mapsize);
-		startmappos = (int)(filePos-mappos);
+		startMappos = (int)(filePos-mappos);
 		map = (char*)mapObj->map(mappos);
 		current_mapsize = mapObj->mapsize();
 	}

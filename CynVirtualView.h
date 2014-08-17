@@ -26,7 +26,7 @@ namespace afltk {
 		int request_mapsize;
 		int current_mapsize;
 		long long mappos;
-		int startmappos;
+		int startMappos;
 		int Bom_type;
 		int coding;
 		T_List<char*> *lines;

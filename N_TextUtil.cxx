@@ -120,6 +120,66 @@ void backToBeginLine(char *text, int &pos)
 	pos++;
 }
 
+
+void backToBeginLines(char *text, int &pos, int nLines)
+{
+	for (int i=0; i<nLines; i++)
+	{
+		if (text[pos]==10 && pos-1>=0 && text[pos-1]==13) pos--;
+		if (pos>0 &&(text[pos]==13 || text[pos]==10)) pos--;
+		while (pos >= 0)
+		{
+			if (text[pos]==13 || text[pos]==10)
+			{
+				break;
+			}
+			pos--;
+		}
+		if (pos<0) break;
+	}
+	pos++;
+}
+
+void backToBeginLine(char *text, int &pos, int maxLineLen)
+{
+	int savpos = pos;
+	if (text[pos]==10 && pos-1>=0 && text[pos-1]==13) pos--;
+	if (pos>0 &&(text[pos]==13 || text[pos]==10)) pos--;
+	while (pos >= 0 && savpos-pos<maxLineLen)
+	{
+		if (text[pos]==13 || text[pos]==10)
+		{
+			break;
+		}
+		pos--;
+	}
+	pos++;
+}
+
+void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen)
+{
+	int savpos = pos;
+	int lastLineBegin=0;
+	for (int i=0; i<nLines; i++)
+	{
+		if (text[pos]==10 && pos-1>=0 && text[pos-1]==13) pos--;
+		if (pos>0 &&(text[pos]==13 || text[pos]==10)) pos--;
+		while (pos >= 0 && savpos-pos<maxLinesLen)
+		{
+			if (text[pos]==13 || text[pos]==10)
+			{
+				lastLineBegin = pos+1;
+				break;
+			}
+			pos--;
+		}
+		if (pos<0) break;
+		if (savpos-pos>=maxLinesLen) break;
+	}
+	pos++;
+	if (lastLineBegin!=0) pos=lastLineBegin;
+}
+
 //alloc space to lineA+lineB ana dfree lineA,lineB
 char *mergeLines(char *lineA, char *lineB)
 {
