@@ -12,17 +12,6 @@
 using namespace ab;
 
 namespace afltk {
-	struct CVV_Thread_Data
-	{
-		int keep_running;
-		Fl_Widget *widget;
-		V_PageScrollbar *vscroll;
-		int ymax;
-		char *buf;
-		int buf_size;
-		int coding;
-		T_List<char*> *lines;
-	};
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 		friend void Scrollbar_CB(Fl_Widget* w, void *p);
@@ -31,7 +20,6 @@ namespace afltk {
 		V_PageScrollbar *_vscroll;			///< Vertical scrollbar
 		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar
 		Fl_Thread thread;
-		CVV_Thread_Data exchange_data;
 		N_File_Stream *stream;
 		char *buf;
 		int buf_size;

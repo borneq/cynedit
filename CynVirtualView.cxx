@@ -6,31 +6,7 @@
 
 using namespace ab;
 
-namespace afltk {
-	void thread_func(void* p)
-	{
-		CVV_Thread_Data *data = (CVV_Thread_Data *)p;
-		while (data->keep_running)
-		{
-			/*Fl::lock(); // acquire fltk GUI lock
-			data->vscroll->slider_size((double)pos / data->buf_size);
-			data->widget->redraw();
-			Fl::unlock(); // release fltk lock
-			Fl::awake();
-			while (data->keep_running && data->paintState != AFTER_PAINT)
-			{
-				PAUSE(30);
-			}
-			for (int i = 0; i < data->lines->size(); i++)
-				free(data->lines->at(i));
-			data->lines->clear();
-			while (data->keep_running && data->paintState != NEED_THREAD_JOB)
-			{
-				PAUSE(30);
-			}*/
-		}
-	}
-
+namespace afltk {	
 	void Scrollbar_CB(Fl_Widget* w, void *p)
 	{
 		CynVirtualView* view = (CynVirtualView*)p;
@@ -72,9 +48,6 @@ namespace afltk {
 
 	/// Destructor.
 	CynVirtualView::~CynVirtualView() {
-		Fl::unlock();
-		exchange_data.keep_running = 0; /* make any pending threads expire */;
-		n_wait_end_thread(thread);
 		delete stream;
 		delete lines;
 		free(buf);
@@ -171,21 +144,7 @@ namespace afltk {
 		//initThread();
 	}
 
-	void CynVirtualView::initThread()
-	{
-		Fl::lock();
-		exchange_data.keep_running = 1; /* set this zero to expire all the child threads */
-		exchange_data.widget = this;
-		exchange_data.vscroll = _vscroll;
-		exchange_data.ymax = h() - _hscroll->h();
-		exchange_data.buf = buf;
-		exchange_data.buf_size = buf_size;
-		exchange_data.coding = coding;
-		exchange_data.lines = lines;
-		thread = n_create_thread(thread_func, (void *)(&exchange_data));
-	}
-
-	void CynVirtualView::read_buf()
+    void CynVirtualView::read_buf()
 	{
 		buf_size = (int)min(estimatedLineSize*(numVisibleLines+1), stream->get_size());
 		free(buf);
