@@ -60,16 +60,9 @@ namespace afltk {
 	int CynVirtualView::findFirstVisibleLine()
 	{
 		int i = startMappos;
-		backToBeginLines(map, i, lineFilePos+1, (lineFilePos+2)*MaxLineLen);
+		backToBeginLines(map, i, lineFilePos+1, (numVisibleLines+1)*MaxLineLen);
 		if (mappos==0 && Bom_type==BOM_UTF8 && i<sizeof(BOM_UTF8_DATA))
 			i=sizeof(BOM_UTF8_DATA);
-		if (startMappos-i>(lineFilePos+1)*MaxLineLen)
-		{
-			char *line;
-			int endType;
-			getNextLine(map, current_mapsize, line, i, endType, MaxLineLen, coding==CODING_UTF8);
-			free(line);
-		}
 		return i;
 	}
 
@@ -83,10 +76,9 @@ namespace afltk {
 		char *line;
 		int blockLine = 0;
 		int endType;
-		while (/*posY < ymax && */getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
+		while (getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
 			lines->add(line);
-			//posY += 16;
 			if (pos>startMappos || pos==current_mapsize) break;
 		}
 		int loopcnt = lines->size()-lineFilePos-1;
@@ -95,14 +87,11 @@ namespace afltk {
 			free(lines->at(0));
 			lines->del(0);
 		}
-		assert(lines->size() == lineFilePos+1);
-		if (lineFilePos==numVisibleLines)
-		{
-			free(lines->at(0));
-			lines->del(0);
-		}
+		if
+		(!(lines->size() == lineFilePos+1))
+		printf("tutaj");
 		int posY = y()+16*lines->size();
-		while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
+    	while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
 			lines->add(line);
 			posY += 16;
