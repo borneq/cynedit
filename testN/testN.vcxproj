@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="..\N_File_Stream.cxx" />
+    <ClCompile Include="..\N_Mapping.cxx" />
     <ClCompile Include="..\N_Stream.cxx" />
     <ClCompile Include="..\N_StringList.cxx" />
     <ClCompile Include="..\N_TextUtil.cxx" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="..\N_Base_List.h" />
     <ClInclude Include="..\N_File_Stream.h" />
+    <ClInclude Include="..\N_Mapping.h" />
     <ClInclude Include="..\N_Seek_Stream.h" />
     <ClInclude Include="..\N_Stream.h" />
     <ClInclude Include="..\N_StringList.h" />

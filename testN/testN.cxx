@@ -9,6 +9,7 @@
 #include <N_TextUtil.h>
 #include <N_Base_List.h>
 #include <N_Utf.h>
+#include <N_Mapping.h>
 
 using namespace ab;
 
@@ -95,7 +96,7 @@ void show(char *strA)
 	int pos = 0;
 	char *line;
     int endType;
-    while (getNextLine(strA,line,pos,endType)) printf("%d : \"%s\" endType=%d",pos,line,endType);
+    while (getNextLineZ(strA,line,pos,endType)) printf("%d : \"%s\" endType=%d",pos,line,endType);
 	printf("\n");
 	free(line);
 }
@@ -172,7 +173,7 @@ void test_insert()
 bool isUTF8file(const wchar_t *filename)
 {
 	N_File_Stream *stream = new N_File_Stream(filename, L"r");
-	int size = std::min(4 * 1024, (int)stream->get_size());
+	int size = min(4 * 1024, (int)stream->get_size());
 	char *buf = (char*)malloc(size);
 	stream->read(buf, size);
 	delete stream;
@@ -186,7 +187,14 @@ void test_utf8()
 	isUTF8file(L"c:\\temp\\bigSample.txt");
 }
 
+void test_mapping()
+{
+	//N_Mapping map(L"c:\\temp\\bigSample.txt", 64*1024);
+	N_Mapping map(L"c:\\wikidump\\plwiki-latest-pages-articles-multistream.xml", 64*1024);
+	char *p = (char *)map.map(0);
+}
+
 int main(int argc, char** argv) {	
-	//test_utf8();
+	test_mapping();
 	//getchar();
 }

@@ -7,7 +7,8 @@ const int LF_UNIX      = 1;
 const int CRLF_WINDOWS = 2;
 const int CR_MAC       = 3;
 
-bool getNextLine(char *text, char*&line, int &pos, int &endType);
+bool getNextLineZ(char *text, char*&line, int &pos, int &endType);
+bool getNextLine(char *text, int maxlen, char*&line, int &pos, int &endType);
 void backToBeginLine(char *text, int &pos);
 char *mergeLines(char *lineA, char *lineB);
 }

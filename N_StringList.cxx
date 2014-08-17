@@ -34,7 +34,7 @@ void N_StringList::loadFromStream(N_Stream &stream)
 		char *line;
 		int blockLine = 0;
 		int endType;
-		while (getNextLine(buf,line,pos,endType))
+		while (getNextLineZ(buf,line,pos,endType))
 		{
 			assert(endType>=0 && endType<=3);
 			//if read all line but no CR,LF - next line is empty, merge OK

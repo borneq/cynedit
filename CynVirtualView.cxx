@@ -119,7 +119,7 @@ namespace afltk {
 		int blockLine = 0;
 		int endType;
 		int posY = y();
-		while (posY < ymax && getNextLine(buf, line, pos, endType))
+		while (posY < ymax && getNextLineZ(buf, line, pos, endType))
 		{
 			lines->add(line);
 			posY += 16;
