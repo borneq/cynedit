@@ -37,6 +37,7 @@ namespace afltk {
 		void update_map();
 		int findFirstVisibleLine();
 		inline int getNumVisibleLines(){ return max(0, (h() - 16) / 16); }
+		int h_changeslider; //previous h(), chenge slider only if h() changes
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();

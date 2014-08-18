@@ -41,6 +41,7 @@ namespace afltk {
 		lines = new T_List<char*>;
 		numVisibleLines = getNumVisibleLines();
 		mapObj = NULL;
+		h_changeslider = 0;
 	}
 
 	/// Destructor.
@@ -84,6 +85,7 @@ namespace afltk {
 		int loopcnt = lines->size()-lineFilePos-1;
 		for (int i = 0; i < loopcnt; i++)
 		{
+			pos0 -= strlen(lines->at(0))+1;
 			free(lines->at(0));
 			lines->del(0);
 		}
@@ -101,11 +103,16 @@ namespace afltk {
 			fl_color(0, 0, 0);//font color
 			fl_draw(lines->at(i), min(100,strlen(lines->at(i))), x() + 5, y() + i * 16 + 12);
 		}
+		if (h()!=h_changeslider)
+		{
+		  _vscroll->slider_size( (double)(pos-pos0) / mapObj->filesize() );
+		  h_changeslider = h();
+		}
 		for (int i = 0; i < lines->size(); i++)
 			free(lines->at(i));
 		lines->clear();
 		fl_rectf(x(),posY, w(), y()+h()-16-posY, 255, 255, 255);//draw remaining area
-		_vscroll->slider_size( (double)(pos-pos0) / mapObj->filesize() );
+
      	_vscroll->resize(x() + w() - 16, y(), 16, h() - 16);
 		draw_child(*_vscroll);
 		_hscroll->resize(x(), y()+h()-16, w()-16, 16);
