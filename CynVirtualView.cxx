@@ -61,7 +61,7 @@ namespace afltk {
 	int CynVirtualView::findFirstVisibleLine()
 	{
 		int i = startMappos;
-		backToBeginLines(map, i, lineFilePos+1, (numVisibleLines+1)*MaxLineLen);
+		backToBeginLines(map, i, lineFilePos+1, (numVisibleLines+1)*(MaxLineLen+1));
 		if (mappos==0 && Bom_type==BOM_UTF8 && i<sizeof(BOM_UTF8_DATA))
 			i=sizeof(BOM_UTF8_DATA);
 		return i;
@@ -83,6 +83,8 @@ namespace afltk {
 			if (pos>startMappos || pos==current_mapsize) break;
 		}
 		int loopcnt = lines->size()-lineFilePos-1;
+		if (lineFilePos>=numVisibleLines)
+			loopcnt +=lineFilePos-numVisibleLines+1;
 		for (int i = 0; i < loopcnt; i++)
 		{
 			pos0 -= strlen(lines->at(0))+1;
