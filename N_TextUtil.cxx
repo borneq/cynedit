@@ -202,17 +202,33 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 {
 	int nChar=0;
 	int result=0;
-	while (nChar<nVisibleFixedChars)
+	while (nChar<nVisibleFixedChars && *in!=0)
 	{
-		uchar len=utf8CharLen((uchar*)in);
-		for (int i=0;i<len;i++)
+		if (*in==9)
 		{
-			*out = *in;
+			for (int i=0;i<tabWidth && nChar<nVisibleFixedChars;i++)
+			{
+				*out = ' ';
+				out++;
+				result++;
+				nChar++;
+			}
 			in++;
-			out++;
+			if (nChar>=nVisibleFixedChars) return result;
 		}
-		result +=len;
-		nChar++;
+		else
+		{
+			uchar len=utf8CharLen((uchar*)in);
+			for (int i=0;i<len;i++)
+			{
+				if (*in==0) break;
+				*out = *in;
+				in++;
+				out++;
+			}
+			result +=len;
+			nChar++;
+		}
 	}
 	return result;
 }
