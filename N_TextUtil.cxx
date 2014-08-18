@@ -206,6 +206,14 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 	{
 		if (*in==9)
 		{
+			if (tabAlign)
+			do{
+				*out = ' ';
+				out++;
+				result++;
+				nChar++;
+			} while(nChar % tabWidth != 0 && nChar<nVisibleFixedChars);
+			else
 			for (int i=0;i<tabWidth && nChar<nVisibleFixedChars;i++)
 			{
 				*out = ' ';

@@ -43,7 +43,7 @@ namespace afltk {
 		mapObj = NULL;
 		h_changeslider = 0;
 		tabWidth = 4;
-		tabAlign = false;
+		tabAlign = true;
 	}
 
 	/// Destructor.
