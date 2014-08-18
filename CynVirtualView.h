@@ -40,6 +40,7 @@ namespace afltk {
 		int h_changeslider; //previous h(), chenge slider only if h() changes
 		uchar tabWidth;
 		bool tabAlign;
+		int horizPos_;
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();

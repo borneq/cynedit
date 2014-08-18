@@ -44,6 +44,7 @@ namespace afltk {
 		h_changeslider = 0;
 		tabWidth = 4;
 		tabAlign = true;
+		horizPos_ = 3;
 	}
 
 	/// Destructor.
@@ -107,7 +108,7 @@ namespace afltk {
 		char *lineBuffer = (char*)malloc(nVisibleFixedChars*4+1); //because UTF8 can have 4 bytes + 1 zero at end
 		for (int i = 0; i < lines->size(); i++)
 		{
-			int buflen = fixedTabExpand(lines->at(i), lineBuffer, nVisibleFixedChars, 0, tabWidth, tabAlign);
+			int buflen = fixedTabExpand(lines->at(i), lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
 			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
 			fl_color(0, 0, 0);//font color
 			fl_draw(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);

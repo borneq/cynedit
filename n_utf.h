@@ -9,7 +9,7 @@ namespace ab {
 	const int CODING_LOCALE = 1;
 	const int CODING_UTF8 = 1;
 
-	uchar utf8CharLen(uchar *utf8);
+	uchar utf8CharLen(uchar firstByte);
 	unsigned long utf8to32_one(const char *start, int *len, int maxlen);
 	int utf32to8_one(unsigned ucs, char* buf);
 	int lenUtf8_one(unsigned ucs);

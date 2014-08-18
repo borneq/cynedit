@@ -18,11 +18,11 @@ namespace ab {
 	is divided to blocks and block division not fit to uutf8 division
 */
 
-uchar utf8CharLen(uchar *utf8)
+uchar utf8CharLen(uchar firstByte)
 {
-	if ((*utf8 & 0x80) == 0) return 1;
-	if ((*utf8 & 0x20) == 0) return 2;
-	if ((*utf8 & 0x10) == 0) return 3;
+	if ((firstByte & 0x80) == 0) return 1;
+	if ((firstByte & 0x20) == 0) return 2;
+	if ((firstByte & 0x10) == 0) return 3;
 	return 4;
 }
 

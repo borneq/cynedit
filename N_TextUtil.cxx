@@ -202,6 +202,53 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 {
 	int nChar=0;
 	int result=0;
+	while (nChar<horizPos && *in!=0)
+	{
+		if (*in==9)
+		{
+			if (tabAlign)
+			{
+				do{
+					nChar++;
+				} while(nChar % tabWidth != 0 && nChar<horizPos);
+				while(nChar % tabWidth != 0 && nChar<nVisibleFixedChars+horizPos)
+				{
+					*out = ' ';
+				    out++;
+					nChar++;
+				}
+			}
+			else
+			{
+				int tw = tabWidth;
+				for (int i=0;i<tabWidth && nChar<horizPos;i++)
+				{
+					nChar++;
+					tw--;
+				}
+				for (int i=0;i<tw && nChar<nVisibleFixedChars+horizPos;i++)
+				{
+					*out = ' ';
+				    out++;
+					nChar++;
+				}
+			}
+			in++;
+		}
+		else
+		{
+			uchar len=utf8CharLen((uchar)*in);
+			for (int i=0;i<len;i++)
+			{
+				if (*in==0) break;
+				in++;
+			}
+			nChar++;
+		}
+	}
+	nChar = 0;
+	//result: in
+
 	while (nChar<nVisibleFixedChars && *in!=0)
 	{
 		if (*in==9)
@@ -222,11 +269,10 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 				nChar++;
 			}
 			in++;
-			if (nChar>=nVisibleFixedChars) return result;
 		}
 		else
 		{
-			uchar len=utf8CharLen((uchar*)in);
+			uchar len=utf8CharLen((uchar)*in);
 			for (int i=0;i<len;i++)
 			{
 				if (*in==0) break;
