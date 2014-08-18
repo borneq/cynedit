@@ -69,6 +69,8 @@ namespace afltk {
 
 	void CynVirtualView::draw()
 	{
+		filePos = (long long)((double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum())*mapObj->filesize());
+		lineFilePos = (int)(numVisibleLines*(double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum()));
 		numVisibleLines = getNumVisibleLines();
 		update_map();
 		int pos = findFirstVisibleLine();
@@ -87,7 +89,7 @@ namespace afltk {
 			loopcnt +=lineFilePos-numVisibleLines+1;
 		for (int i = 0; i < loopcnt; i++)
 		{
-			pos0 -= strlen(lines->at(0))+1;
+			pos0 += strlen(lines->at(0))+1;
 			free(lines->at(0));
 			lines->del(0);
 		}
@@ -107,7 +109,12 @@ namespace afltk {
 		}
 		if (h()!=h_changeslider)
 		{
-		  _vscroll->slider_size( (double)(pos-pos0) / mapObj->filesize() );
+			int pp0;
+			if (Bom_type==BOM_UTF8 && pos0<=sizeof(BOM_UTF8_DATA))
+				pp0 = 0;
+			else
+				pp0 = pos0;
+		  _vscroll->slider_size( (double)(pos-pp0) / mapObj->filesize() );
 		  h_changeslider = h();
 		}
 		for (int i = 0; i < lines->size(); i++)

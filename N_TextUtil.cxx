@@ -177,7 +177,7 @@ void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen)
 		if (savpos-pos>=maxLinesLen) break;
 	}
 	pos++;
-	if (lastLineBegin!=0) pos=lastLineBegin;
+	if (lastLineBegin!=0 && pos!=0) pos=lastLineBegin;
 }
 
 //alloc space to lineA+lineB ana dfree lineA,lineB
