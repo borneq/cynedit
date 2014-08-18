@@ -7,7 +7,7 @@
 using namespace ab;
 
 namespace afltk {
-	void Scrollbar_CB(Fl_Widget* w, void *p)
+	void VScrollbar_CB(Fl_Widget* w, void *p)
 	{
 		CynVirtualView* view = (CynVirtualView*)p;
 		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
@@ -16,11 +16,18 @@ namespace afltk {
 		view->redraw();
 	}
 
-	void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
+	void VScrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc)
 	{
 		//CynVirtualView* view = (CynVirtualView*)p;
 		//printf("cb\n");
 		//Scrollbar_CB(w, p);
+	}
+
+	void HScrollbar_CB(Fl_Widget* w, void *p)
+	{
+		CynVirtualView* view = (CynVirtualView*)p;
+		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
+		view->horizPos(scroll->value());
 	}
 
 	/// Constructor.
@@ -30,11 +37,13 @@ namespace afltk {
 		_vscroll->maximum(100);
 		_vscroll->linesize(1);
 		_vscroll->pagesize(20);
-		_vscroll->callback(Scrollbar_CB, (void*)this);
-		_vscroll->callbackScroll(Scrollbar_CB1, (void*)this);
+		_vscroll->callback(VScrollbar_CB, (void*)this);
+		_vscroll->callbackScroll(VScrollbar_CB1, (void*)this);
 		_hscroll = new Fl_Scrollbar(X, Y+H-16, W-16, 16);		// will be resized by draw()
 		_hscroll->type(FL_HORIZONTAL);
+		_hscroll->linesize(1);
 		_hscroll->maximum(100);
+		_hscroll->callback(HScrollbar_CB, (void*)this);
 
 		Bom_type = NO_BOM;
 		coding = 0;
@@ -44,7 +53,7 @@ namespace afltk {
 		h_changeslider = 0;
 		tabWidth = 4;
 		tabAlign = true;
-		horizPos_ = 3;
+		horizPos_ = 0;
 	}
 
 	/// Destructor.

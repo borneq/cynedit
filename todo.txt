@@ -9,5 +9,4 @@ Strings - keep pair(char*,len) instead char*
 getNextLine - must return line len
 use _beginthreadex
 CynVirtualView:
-  horizontal position
   select area and Copy

@@ -16,8 +16,9 @@ namespace afltk {
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
 	const int MaxLineLen = 1024;
 	class FL_EXPORT CynVirtualView : public Fl_Group {
-		friend void Scrollbar_CB(Fl_Widget* w, void *p);
-		friend void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc);
+		friend void VScrollbar_CB(Fl_Widget* w, void *p);
+		friend void VScrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc);
+		friend void HScrollbar_CB(Fl_Widget* w, void *p);
 	protected:
 		V_PageScrollbar *_vscroll;			///< Vertical scrollbar
 		Fl_Scrollbar *_hscroll;			///< Horizontal scrollbar
@@ -49,6 +50,8 @@ namespace afltk {
 		void determineCoding();
 		void setFile(const wchar_t *fileName);
 		void initThread();
+		inline int horizPos(){return horizPos_;}
+		void horizPos(int value){horizPos_ = value; redraw();}
 	};
 }
 
