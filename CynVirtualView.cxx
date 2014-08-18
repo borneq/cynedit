@@ -87,9 +87,6 @@ namespace afltk {
 			free(lines->at(0));
 			lines->del(0);
 		}
-		if
-		(!(lines->size() == lineFilePos+1))
-		printf("tutaj");
 		int posY = y()+16*lines->size();
     	while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
