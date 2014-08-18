@@ -1,6 +1,8 @@
+#include <FL/Fl.H> //uchar
 #include <string.h> // memcpy
 #include <stdlib.h> //malloc
 #include <stdio.h> //NULL
+#include <N_Utf.h>
 #include <N_TextUtil.h>
 
 namespace ab {
@@ -192,5 +194,26 @@ char *mergeLines(char *lineA, char *lineB)
 	free(lineA);
 	free(lineB);
 	return res;
+}
+
+//tab expanding for fixed font
+//copy maximal nVisibleFixedChars utf8 chars from in to out, one utf8 char can contail one or more chars
+int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign)
+{
+	int nChar=0;
+	int result=0;
+	while (nChar<nVisibleFixedChars)
+	{
+		uchar len=utf8CharLen((uchar*)in);
+		for (int i=0;i<len;i++)
+		{
+			*out = *in;
+			in++;
+			out++;
+		}
+		result +=len;
+		nChar++;
+	}
+	return result;
 }
 }

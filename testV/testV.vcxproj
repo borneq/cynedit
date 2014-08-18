@@ -39,12 +39,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\code\cynedit;c:\fltk;$(IncludePath)</IncludePath>
+    <IncludePath>c:\fltk;D:\code\cynedit;$(IncludePath)</IncludePath>
     <LibraryPath>c:\fltk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\code\cynedit;c:\fltk;$(IncludePath)</IncludePath>
+    <IncludePath>c:\fltk;D:\code\cynedit;$(IncludePath)</IncludePath>
     <LibraryPath>c:\fltk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -100,7 +100,9 @@
     <ClInclude Include="..\Fold.h" />
     <ClInclude Include="..\N_Mapping.h" />
     <ClInclude Include="..\N_StringList.h" />
+    <ClInclude Include="..\N_TextUtil.h" />
     <ClInclude Include="..\N_Threads.h" />
+    <ClInclude Include="..\N_Utf.h" />
     <ClInclude Include="..\V_PageScrollbar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

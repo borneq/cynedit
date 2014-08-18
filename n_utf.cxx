@@ -1,3 +1,6 @@
+#ifndef N_UTF_H
+#define N_UTF_H
+
 #include <assert.h>
 #include <n_utf.h>
 #include <cstring>
@@ -14,9 +17,18 @@ namespace ab {
 	in this case function returns zero. This occurs when UTF8 text
 	is divided to blocks and block division not fit to uutf8 division
 */
+
+uchar utf8CharLen(uchar *utf8)
+{
+	if ((*utf8 & 0x80) == 0) return 1;
+	if ((*utf8 & 0x20) == 0) return 2;
+	if ((*utf8 & 0x10) == 0) return 3;
+	return 4;
+}
+
 unsigned long utf8to32_one(const char *start, int *len, int maxlen)
 {
-unsigned char b0,b1,b2,b3;
+uchar b0,b1,b2,b3;
     assert(maxlen>=1 && maxlen<=4);
 	*len = 1;
 	b0 = start[0];
@@ -343,3 +355,4 @@ http ://www.gnu.org/software/libc/manual/html_node/iconv-Examples.html
 
 
 }
+#endif /*N_UTF_H*/

@@ -42,6 +42,8 @@ namespace afltk {
 		numVisibleLines = getNumVisibleLines();
 		mapObj = NULL;
 		h_changeslider = 0;
+		tabWidth = 4;
+		tabAlign = false;
 	}
 
 	/// Destructor.
@@ -69,6 +71,8 @@ namespace afltk {
 
 	void CynVirtualView::draw()
 	{
+		fl_font(FL_COURIER, 12);
+		double fixedCharWidth=fl_width("0123456789",10)/10;
 		filePos = (long long)((double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum())*mapObj->filesize());
 		lineFilePos = (int)(numVisibleLines*(double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum()));
 		numVisibleLines = getNumVisibleLines();
@@ -99,14 +103,16 @@ namespace afltk {
 			lines->add(line);
 			posY += 16;
 		}
-
-		fl_font(FL_COURIER, 12);
+		int nVisibleFixedChars = (int)((w()-16)/fixedCharWidth)+1; //+1 partially visible
+		char *lineBuffer = (char*)malloc(nVisibleFixedChars*4+1); //because UTF8 can have 4 bytes + 1 zero at end
 		for (int i = 0; i < lines->size(); i++)
 		{
+			int buflen = fixedTabExpand(lines->at(i), lineBuffer, nVisibleFixedChars, 0, tabWidth, tabAlign);
 			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
 			fl_color(0, 0, 0);//font color
-			fl_draw(lines->at(i), min(100,strlen(lines->at(i))), x() + 5, y() + i * 16 + 12);
+			fl_draw(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
 		}
+		free(lineBuffer);
 		if (h()!=h_changeslider)
 		{
 			int pp0;

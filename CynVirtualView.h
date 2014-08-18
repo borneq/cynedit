@@ -14,7 +14,7 @@ using namespace ab;
 
 namespace afltk {
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
-	const int MaxLineLen = 10;
+	const int MaxLineLen = 1024;
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 		friend void Scrollbar_CB(Fl_Widget* w, void *p);
 		friend void Scrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc);
@@ -38,6 +38,8 @@ namespace afltk {
 		int findFirstVisibleLine();
 		inline int getNumVisibleLines(){ return max(0, (h() - 16) / 16); }
 		int h_changeslider; //previous h(), chenge slider only if h() changes
+		uchar tabWidth;
+		bool tabAlign;
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();
