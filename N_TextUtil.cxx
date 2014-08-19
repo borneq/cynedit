@@ -197,8 +197,8 @@ char *mergeLines(char *lineA, char *lineB)
 }
 
 //tab expanding for fixed font
-//copy maximal nVisibleFixedChars utf8 chars from in to out, one utf8 char can contail one or more chars
-int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign)
+//copy maximal nVisibleFixedChars utf8 chars from in to out, one utf8 char can contains one or more chars
+int fixedTabExpandUtf8(char *in, char *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign)
 {
 	int nChar=0;
 	int result=0;
@@ -246,8 +246,7 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 			nChar++;
 		}
 	}
-	nChar = 0;
-	//result: in
+	nChar -= horizPos;
 
 	while (nChar<nVisibleFixedChars && *in!=0)
 	{
@@ -283,6 +282,86 @@ int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uc
 			result +=len;
 			nChar++;
 		}
+	}
+	return result;
+}
+
+//version UCS4
+int fixedTabExpand(int *in, int inLen, int *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign)
+{
+	int nChar=0;
+	int result=0;
+	int inPos = 0;
+	while (nChar<horizPos && inPos<inLen)
+	{
+		if (*in==9)
+		{
+			if (tabAlign)
+			{
+				do{
+					nChar++;
+				} while(nChar % tabWidth != 0 && nChar<horizPos);
+				while(nChar % tabWidth != 0 && nChar<nVisibleFixedChars+horizPos)
+				{
+					*out = 32;
+				    out++;
+					nChar++;
+				}
+			}
+			else
+			{
+				int tw = tabWidth;
+				for (int i=0;i<tabWidth && nChar<horizPos;i++)
+				{
+					nChar++;
+					tw--;
+				}
+				for (int i=0;i<tw && nChar<nVisibleFixedChars+horizPos;i++)
+				{
+					*out = 32;
+				    out++;
+					nChar++;
+				}
+			}
+		}
+		else
+		{
+			nChar++;
+		}
+		in++;
+		inPos++;
+	}
+	nChar -= horizPos;
+
+	while (nChar<nVisibleFixedChars && inPos<inLen)
+	{
+		if (*in==9)
+		{
+			if (tabAlign)
+			do{
+				*out = 32;
+				out++;
+				result++;
+				nChar++;
+			} while((nChar+horizPos) % tabWidth != 0 && nChar<nVisibleFixedChars);
+			else
+			for (int i=0;i<tabWidth && nChar<nVisibleFixedChars;i++)
+			{
+				*out = 32;
+				out++;
+				result++;
+				nChar++;
+			}
+		}
+		else
+		{
+			*out = *in;
+			out++;
+			result++;
+			nChar++;
+		}
+		in++;
+		inPos++;
 	}
 	return result;
 }

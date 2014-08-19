@@ -14,7 +14,8 @@ void backToBeginLines(char *text, int &pos, int nLines);
 void backToBeginLine(char *text, int &pos, int maxLineLen);
 void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen);
 char *mergeLines(char *lineA, char *lineB);
-int fixedTabExpand(char *in, char *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign);
+int fixedTabExpandUTF8(char *in, char *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign);
+int fixedTabExpand(int *in, int inLen, int *out, int nVisibleFixedChars, int horizPos, uchar tabWidth, bool tabAlign);
 }
 
 #endif /*N_TEXTUTIL_H*/

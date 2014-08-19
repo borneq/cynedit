@@ -29,7 +29,6 @@ uchar utf8CharLen(uchar firstByte)
 unsigned long utf8to32_one(const char *start, int *len, int maxlen)
 {
 uchar b0,b1,b2,b3;
-    assert(maxlen>=1 && maxlen<=4);
 	*len = 1;
 	b0 = start[0];
 	if ((b0 & 0x80) == 0) return b0;
@@ -172,66 +171,82 @@ int lenUtf16_one(unsigned ucs)
       return 1;
 }
 
-///returns number bytes as a part of UTF8 character; in correct situation should return 0
+///returns length of UCS4 string
 int utf8to32(const char *utf8, int utf8len, int *utf32)
 {
-	int len;
+	int len=0;
 	while (utf8len>0)
 	{
-		*utf32 = utf8to32_one(utf8, &len, utf8len);
-		if (len==0) return utf8len;
-		utf8 += len;
+		int charlen;
+		*utf32 = utf8to32_one(utf8, &charlen, utf8len);
+		if (charlen==0) return len+1;
+		utf8 += charlen;
 		utf32++;
-		utf8len -= len;
+		len++;
+		utf8len -= charlen;
 	}
-	return utf8len;
+	return len;
 }
 
-void utf32to8(const int *utf32, int utf32len, char *utf8)
+///returns length of UTF8 string
+int utf32to8(const int *utf32, int utf32len, char *utf8)
 {
+	int len=0;
 	for (int i=0; i<utf32len; i++)
 	{
-		int len = utf32to8_one(utf32[i], utf8);
-		utf8 += len;
+		int charlen = utf32to8_one(utf32[i], utf8);
+		utf8 += charlen;
+		len += charlen;
 	}
+	return len;
 }
 
+///returns length of UCS4 string
 int utf16to32(const wchar_t *utf16, int utf16len, int *utf32)
 {
-	int len;
+	int len=0;
 	while (utf16len>0)
 	{
-		*utf32 = utf16to32_one(utf16, &len, utf16len);
-		if (len==0) return utf16len;
-		utf16 += len;
+		int charlen;
+		*utf32 = utf16to32_one(utf16, &charlen, utf16len);
+		if (charlen==0) return len+1;
+		utf16 += charlen;
 		utf32++;
-		utf16len -= len;
+		len++;
+		utf16len -= charlen;
 	}
-	return utf16len;
+	return len;
 }
 
-void utf32to16(const int *utf32, int utf32len, wchar_t *utf16)
+///returns length of UTF16 string
+int utf32to16(const int *utf32, int utf32len, wchar_t *utf16)
 {
+	int len=0;
 	for (int i=0; i<utf32len; i++)
 	{
-		int len = utf32to16_one(utf32[i], utf16);
-		utf16 += len;
+		int charlen = utf32to16_one(utf32[i], utf16);
+		utf16 += charlen;
+		len += charlen;
 	}
+	return len;
 }
 
+///returns length of UTF16 string
 int utf8to16(const char *utf8, int utf8len, wchar_t *utf16)
 {
-	int len8;
+	int len=0;
 	while (utf8len>0)
 	{
+		int len8;
 		unsigned long ucs = utf8to32_one(utf8, &len8, utf8len);
-		if (len8==0) return utf8len;
+		if (len8==0) return len+1;
 		utf8 += len8;
 		utf8len -= len8;
 		int len16 = utf32to16_one(ucs, utf16);
 		utf16 += len16;
+		len += len16;
 	}
-	return utf8len;
+	return len;
 }
 
 int lenUtf8to16(const char *utf8, int utf8len)
@@ -253,17 +268,18 @@ int lenUtf8to16(const char *utf8, int utf8len)
 
 int utf16to8(const wchar_t *utf16, int utf16len, char *utf8)
 {
-	int len16;
+	int len=0;
 	while (utf16len>0)
 	{
+		int len16;
 		unsigned long ucs = utf16to32_one(utf16, &len16, utf16len);
-		if (len16==0) return utf16len;
+		if (len16==0) return len+1;
 		utf16 += len16;
 		utf16len -= len16;
 		int len8 = utf32to8_one(ucs, utf8);
 		utf8 += len8;
 	}
-	return utf16len;
+	return len;
 }
 
 

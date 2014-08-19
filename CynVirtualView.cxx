@@ -79,6 +79,21 @@ namespace afltk {
 		return i;
 	}
 
+
+	//move this function to lexer
+	void Lex(char *line, unsigned short *lineStyle)
+	{
+	}
+
+	void draw_ucs4(int* str, int strlen, int x, int y)
+	{
+		char *utf8buf = (char *)malloc(4*strlen+1);
+		int utf8len = utf32to8(str, strlen, utf8buf);
+		utf8buf[utf8len] = 0;
+		fl_draw(utf8buf, utf8len, x, y);
+		free(utf8buf);
+	}
+
 	void CynVirtualView::draw()
 	{
 		fl_font(FL_COURIER, 12);
@@ -114,13 +129,20 @@ namespace afltk {
 			posY += 16;
 		}
 		int nVisibleFixedChars = (int)((w()-16)/fixedCharWidth)+1; //+1 partially visible
-		char *lineBuffer = (char*)malloc(nVisibleFixedChars*4+1); //because UTF8 can have 4 bytes + 1 zero at end
+		int *lineBuffer = (int*)malloc(nVisibleFixedChars*sizeof(int));
 		for (int i = 0; i < lines->size(); i++)
 		{
-			int buflen = fixedTabExpand(lines->at(i), lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
+			int lineLen = strlen(lines->at(i));
+			unsigned short *lineStyle = (unsigned short *)malloc(lineLen*sizeof(unsigned short));
+			int *ucs4line = (int *)malloc(lineLen*sizeof(int));
+			int ucs4len = utf8to32(lines->at(i), lineLen, ucs4line);
+			int buflen = fixedTabExpand(ucs4line, ucs4len, lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
 			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
-			fl_color(0, 0, 0);//font color
-			fl_draw(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
+			//fl_color(0, 0, 0);//font color
+			fl_color(FL_MAGENTA);
+			draw_ucs4(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
+			free(ucs4line);
+			free(lineStyle);
 		}
 		free(lineBuffer);
 		if (h()!=h_changeslider)
