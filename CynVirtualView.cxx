@@ -120,27 +120,26 @@ namespace afltk {
 			lines->add(line);
 			posY += 16;
 		}
-		//int nVisibleFixedChars = (int)((w()-16)/fixedCharWidth)+1; //+1 partially visible
-		//int *lineBuffer = (int*)malloc(nVisibleFixedChars*sizeof(int));
 		drawer->init_visible_line(w()-16, horizPos_);
 		for (int i = 0; i < lines->size(); i++)
 		{
 			int lineLen = strlen(lines->at(i));
-			//unsigned short *lineStyle = (unsigned short *)malloc(lineLen*sizeof(unsigned short));
 			int *ucs4line = (int *)malloc(lineLen*sizeof(int));
 			int ucs4len = utf8to32(lines->at(i), lineLen, ucs4line);
-			//fixedTabExpand(ucs4line, ucs4len, lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
-			drawer->fixedTabExpand(ucs4line, ucs4len, tabWidth, tabAlign);
-			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
-			//fl_color(0, 0, 0);//font color
-			fl_color(FL_MAGENTA);
-			drawer->draw_ucs4(x() + 5, y() + i * 16 + 12);
-			//draw_ucs4(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
+			unsigned short *lineStyle = (unsigned short *)malloc(ucs4len*sizeof(unsigned short));
+			for (int j=0; j<ucs4len; j++)
+				lineStyle[j]=0;
+			for (int j=0; j<min(ucs4len,5); j++)
+				lineStyle[j]=1;
+			if (8<ucs4len)lineStyle[8] = 1;
+			if (10<ucs4len)lineStyle[10] = 1;
+
+			drawer->fixedTabExpand(ucs4line, ucs4len, lineStyle, tabWidth, tabAlign);
+			drawer->draw_styled_ucs4(x(), y() + i * 16);
+			free(lineStyle);
 			free(ucs4line);
-			//free(lineStyle);
 		}
 		drawer->free_visible_line();
-		//free(lineBuffer);
 		if (h()!=h_changeslider)
 		{
 			int pp0;
