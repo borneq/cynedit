@@ -91,6 +91,7 @@
     <ClCompile Include="..\N_TextUtil.cxx" />
     <ClCompile Include="..\N_Threads.cxx" />
     <ClCompile Include="..\N_Utf.cxx" />
+    <ClCompile Include="..\V_Drawer.cpp" />
     <ClCompile Include="..\V_PageScrollbar.cxx" />
     <ClCompile Include="testV.cxx" />
   </ItemGroup>
@@ -103,6 +104,7 @@
     <ClInclude Include="..\N_TextUtil.h" />
     <ClInclude Include="..\N_Threads.h" />
     <ClInclude Include="..\N_Utf.h" />
+    <ClInclude Include="..\V_Drawer.h" />
     <ClInclude Include="..\V_PageScrollbar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

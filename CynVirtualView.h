@@ -9,6 +9,7 @@
 #include <N_Threads.h>
 #include <N_File_Stream.h>
 #include <N_Mapping.h>
+#include <V_Drawer.h>
 
 using namespace ab;
 
@@ -42,6 +43,7 @@ namespace afltk {
 		uchar tabWidth;
 		bool tabAlign;
 		int horizPos_;
+		V_Drawer *drawer;
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();

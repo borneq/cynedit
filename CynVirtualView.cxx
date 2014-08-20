@@ -54,6 +54,7 @@ namespace afltk {
 		tabWidth = 4;
 		tabAlign = true;
 		horizPos_ = 0;
+		drawer = new V_Drawer();
 	}
 
 	/// Destructor.
@@ -62,6 +63,7 @@ namespace afltk {
 		delete lines;
 		delete _vscroll;
 		delete _hscroll;
+		delete drawer;
 	}
 
 	int CynVirtualView::handle(int event)
@@ -85,19 +87,9 @@ namespace afltk {
 	{
 	}
 
-	void draw_ucs4(int* str, int strlen, int x, int y)
-	{
-		char *utf8buf = (char *)malloc(4*strlen+1);
-		int utf8len = utf32to8(str, strlen, utf8buf);
-		utf8buf[utf8len] = 0;
-		fl_draw(utf8buf, utf8len, x, y);
-		free(utf8buf);
-	}
-
 	void CynVirtualView::draw()
 	{
 		fl_font(FL_COURIER, 12);
-		double fixedCharWidth=fl_width("0123456789",10)/10;
 		filePos = (long long)((double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum())*mapObj->filesize());
 		lineFilePos = (int)(numVisibleLines*(double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum()));
 		numVisibleLines = getNumVisibleLines();
@@ -128,23 +120,27 @@ namespace afltk {
 			lines->add(line);
 			posY += 16;
 		}
-		int nVisibleFixedChars = (int)((w()-16)/fixedCharWidth)+1; //+1 partially visible
-		int *lineBuffer = (int*)malloc(nVisibleFixedChars*sizeof(int));
+		//int nVisibleFixedChars = (int)((w()-16)/fixedCharWidth)+1; //+1 partially visible
+		//int *lineBuffer = (int*)malloc(nVisibleFixedChars*sizeof(int));
+		drawer->init_visible_line(w()-16, horizPos_);
 		for (int i = 0; i < lines->size(); i++)
 		{
 			int lineLen = strlen(lines->at(i));
-			unsigned short *lineStyle = (unsigned short *)malloc(lineLen*sizeof(unsigned short));
+			//unsigned short *lineStyle = (unsigned short *)malloc(lineLen*sizeof(unsigned short));
 			int *ucs4line = (int *)malloc(lineLen*sizeof(int));
 			int ucs4len = utf8to32(lines->at(i), lineLen, ucs4line);
-			int buflen = fixedTabExpand(ucs4line, ucs4len, lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
+			//fixedTabExpand(ucs4line, ucs4len, lineBuffer, nVisibleFixedChars, horizPos_, tabWidth, tabAlign);
+			drawer->fixedTabExpand(ucs4line, ucs4len, tabWidth, tabAlign);
 			fl_rectf(x(), y()+i*16, w()-16, 16, 255, 255, 255);
 			//fl_color(0, 0, 0);//font color
 			fl_color(FL_MAGENTA);
-			draw_ucs4(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
+			drawer->draw_ucs4(x() + 5, y() + i * 16 + 12);
+			//draw_ucs4(lineBuffer, buflen, x() + 5, y() + i * 16 + 12);
 			free(ucs4line);
-			free(lineStyle);
+			//free(lineStyle);
 		}
-		free(lineBuffer);
+		drawer->free_visible_line();
+		//free(lineBuffer);
 		if (h()!=h_changeslider)
 		{
 			int pp0;

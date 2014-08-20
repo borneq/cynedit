@@ -45,7 +45,6 @@ struct VPS_Increment {
 typedef void (Scroll_Callback)(Fl_Widget*, void*, VPS_Increment*);
 
 class FL_EXPORT V_PageScrollbar : public Fl_Slider {
-
   int linesize_;
   int pagesize_;
   int pushed_;
@@ -53,13 +52,12 @@ class FL_EXPORT V_PageScrollbar : public Fl_Slider {
   void increment_cb();
   Scroll_Callback* callbackScroll_;
   void *user_data_scroll;
-protected:
-  void draw();
 public:
 
   V_PageScrollbar(int X,int Y,int W,int H, const char *L = 0);
   ~V_PageScrollbar();
   int handle(int);
+  void draw();
 
   /**
     Gets the integer value (position) of the slider in the scrollbar.
