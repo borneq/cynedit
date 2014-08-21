@@ -20,11 +20,14 @@ namespace ab {
 #ifdef WIN32
 		void *fiber;
     	void *prevfiber;
+		friend void __stdcall fiberProc(void *param);
 #else
 		fiber_t fib;
+		friend static void fiber_start_fnc(void* p)
 #endif
-	public:
-		virtual void execute() =0;
+	protected:
+		virtual void execute() = 0;
+	public:		
 		void yield(N_Coroutine *next=NULL);
 		void attach();
 		N_Coroutine(long stackSize);

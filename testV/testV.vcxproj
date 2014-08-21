@@ -85,6 +85,7 @@
     <ClCompile Include="..\CynVirtualView.cxx" />
     <ClCompile Include="..\Fold.cxx" />
     <ClCompile Include="..\Lexer.cxx" />
+    <ClCompile Include="..\lexers\LexC.cxx" />
     <ClCompile Include="..\N_Base_List.cxx" />
     <ClCompile Include="..\N_Coroutine.cxx" />
     <ClCompile Include="..\N_File_Stream.cxx" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\CynVirtualView.h" />
     <ClInclude Include="..\Fold.h" />
     <ClInclude Include="..\Lexer.h" />
+    <ClInclude Include="..\lexers\LexC.h" />
     <ClInclude Include="..\N_Coroutine.h" />
     <ClInclude Include="..\N_Mapping.h" />
     <ClInclude Include="..\N_StringList.h" />

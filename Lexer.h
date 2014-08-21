@@ -1,12 +1,13 @@
 #ifndef Lexer_H
 #define Lexer_H
 
+#include <N_Coroutine.h>
+
 namespace ab{
-class Lexer
+class Lexer : public N_Coroutine
 {
 protected:
 public:
-	void Lex();
 };
 }
 #endif /*Lexer_H*/
