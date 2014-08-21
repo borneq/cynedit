@@ -139,7 +139,6 @@ namespace afltk{
 			style = visible_style_[pos];
 			int pos0=pos;
 			while (pos<visible_line_len && style == visible_style_[pos]) pos++;
-			printf("len style=%d\n",pos-pos0);
 			int utf8len = utf32to8(visible_line_+pos0, pos-pos0, utf8buf);
 			utf8buf[utf8len] = 0;
 			int xpos = (int)floor(x+fixedCharWidth*pos0);
