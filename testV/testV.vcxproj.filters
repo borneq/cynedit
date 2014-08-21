@@ -57,6 +57,9 @@
     <ClCompile Include="..\Lexer.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\N_Coroutine.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\N_StringList.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Lexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\N_Coroutine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
