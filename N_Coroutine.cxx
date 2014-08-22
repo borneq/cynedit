@@ -22,7 +22,7 @@ void N_Coroutine::yield(N_Coroutine *next)
 {
 	if (next==NULL)
 		SwitchToFiber(prevfiber);
-	else 
+	else
 	{
 		next->prevfiber = fiber;
 		SwitchToFiber(next->fiber);
@@ -36,7 +36,7 @@ void N_Coroutine::attach()
 
 N_Coroutine::N_Coroutine(long stackSize)
 {
-	if (initFiber==NULL) 
+	if (initFiber==NULL)
 		initFiber = ConvertThreadToFiber(NULL);
 	fiber = CreateFiber(stackSize, fiberProc, (void*)this);
 	prevfiber = initFiber;

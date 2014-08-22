@@ -1,4 +1,7 @@
-Lexer
+Lexer:
+problems: if get next line but process less
+matxhLatin unnecessary?
+maybe channel hidden needed when will folding?
 
 T_List::delAtEnd(int count=1)
 T_List::pack_capacity()

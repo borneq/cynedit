@@ -1,7 +1,9 @@
-#include <exception>
-
 #ifndef T_QUEUE_H
 #define T_QUEUE_H
+
+#include <exception>
+#include <assert.h>
+#include <N_Base_List.h>
 
 namespace ab {
 template<typename T>

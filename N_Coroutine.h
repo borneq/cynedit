@@ -27,7 +27,7 @@ namespace ab {
 #endif
 	protected:
 		virtual void execute() = 0;
-	public:		
+	public:
 		void yield(N_Coroutine *next=NULL);
 		void attach();
 		N_Coroutine(long stackSize);
