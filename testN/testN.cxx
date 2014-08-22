@@ -64,6 +64,23 @@ void test_queue()
         printf("pop=%d\n",queue.pop());	
 }
 
+void test_queue_peek()
+{
+	T_Queue<int> queue(true);
+	for (int i=0; i<7; i++) 
+		queue.push(i);	
+	for (int i=0; i<4; i++) 
+		queue.pop();	
+	for (int i=0; i<4; i++) 
+		queue.push(7+i);	
+	int n;	
+	n = queue.peek(1);
+	n = queue.peek(6);
+	bool outof;
+	n = queue.peek(7, outof);
+	printf("queue size=%d\n",queue.size());
+}
+
 void test_stream()
 {
 	N_File_Stream outStream("abc.000","w");
@@ -195,6 +212,6 @@ void test_mapping()
 }
 
 int main(int argc, char** argv) {	
-	test_mapping();
+	test_queue_peek();
 	//getchar();
 }

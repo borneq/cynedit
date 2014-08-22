@@ -1,3 +1,5 @@
+#include <exception>
+
 #ifndef T_QUEUE_H
 #define T_QUEUE_H
 
@@ -65,12 +67,47 @@ protected:
 		return _capacity;
 	}
 
-	int size()
+	inline int size()
 	{
 		if (_tail >= _head)
 			return _tail - _head;
 		else
 			return _capacity - (_head - _tail);
+	}
+
+	inline T peek(int n)
+	{
+		bool outof;
+		T result  = peek(n, outof);
+		if (outof) throw std::exception("peek out of range");
+		return result;
+	}
+
+	T peek(int n, bool &outof)
+	{
+		if (_tail >= _head)
+		{
+			outof = n >= _tail - _head || n<0;
+			if (outof)
+				return T(0);
+			else
+				return _list[_head+n];
+		}
+		else
+		{
+			outof = n >= _capacity - (_head - _tail) || n<0;
+			if (outof)
+				return T(0);
+			else
+			{
+				int pos = _head+n;
+				if (pos<_capacity && pos>_head) //pos>_head: test for integer overflow
+					return _list[pos];
+				else
+					return _list[pos-_capacity];
+			}
+			return 0;
+		}
 	}
 
 	void push(T item)
