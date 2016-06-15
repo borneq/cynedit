@@ -1,7 +1,7 @@
 #include "N_Base_List.H"
 
 namespace ab {
-///return the most significant byte which is set, the same as BSR assembler opcode
+///return the most significant bit which is set, the same as BSR assembler opcode
 ///but assembler is not portable
 int find_set_bit(unsigned int x)
 {

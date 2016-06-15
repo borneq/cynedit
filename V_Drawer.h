@@ -1,6 +1,10 @@
 #ifndef V_Drawer_H
 #define V_Drawer_H
 
+#include <Colorizer.h>
+
+using namespace ab;
+
 namespace afltk{
 class V_Drawer
 {
@@ -14,6 +18,7 @@ protected:
 	int nVisibleFixedChars;
 public:
 	V_Drawer();
+	Colorizer *colorizer;
 	void init_visible_line(int visibleWidth, int horizPos);
 	void free_visible_line();
 	void fixedTabExpand(int *in, int inLen, unsigned short *style_in, uchar tabWidth, bool tabAlign);

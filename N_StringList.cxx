@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <N_StringList.h>
 #include <N_File_Stream.h>
 #include <N_TextUtil.h>
@@ -36,6 +37,7 @@ void N_StringList::loadFromStream(N_Stream &stream)
 		int endType;
 		while (getNextLineZ(buf,line,pos,endType))
 		{
+			printf("line=%s\n",line);
 			assert(endType>=0 && endType<=3);
 			//if read all line but no CR,LF - next line is empty, merge OK
 			//if read with LF in Linux or all CRLF in Windows - previous line is empty, next not empty, merge OK

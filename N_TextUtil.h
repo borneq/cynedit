@@ -12,7 +12,7 @@ bool getNextLine(char *text, int maxLen, char*&line, int &pos, int &endType, int
 void backToBeginLine(char *text, int &pos);
 void backToBeginLines(char *text, int &pos, int nLines);
 void backToBeginLine(char *text, int &pos, int maxLineLen);
-void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen);
+void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen, bool &lineBound);
 char *mergeLines(char *lineA, char *lineB);
 }
 

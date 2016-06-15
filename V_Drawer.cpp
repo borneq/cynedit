@@ -12,6 +12,7 @@ namespace afltk{
 		visible_line_ = NULL;
 		visible_style_ = NULL;
 		nVisibleFixedChars = 0;
+		colorizer = NULL;
 	}
 
 	void V_Drawer::init_visible_line(int visibleWidth, int horizPos)
@@ -24,6 +25,7 @@ namespace afltk{
 		visible_line_ = (int*)malloc(nVisibleFixedChars*sizeof(int));
 		visible_style_ = (unsigned short*)malloc(nVisibleFixedChars*sizeof(unsigned short));
 	}
+
 	void V_Drawer::free_visible_line()
 	{
 		free(visible_line_);
@@ -143,15 +145,17 @@ namespace afltk{
 			utf8buf[utf8len] = 0;
 			int xpos = (int)floor(x+fixedCharWidth*pos0);
 			int lenchars = (int)ceil(fixedCharWidth*(pos-pos0));
-			if (style==1)
+			Color bgColor, fontColor;
+			if (colorizer!=NULL)
 			{
-				fl_rectf(xpos, y, lenchars, 16, 255, 255, 255);
-				fl_color(FL_MAGENTA);
+				colorizer->getProp(style, bgColor, fontColor);
+				fl_rectf(xpos, y, lenchars, 16, bgColor.r, bgColor.g, bgColor.b);
+				fl_color(fontColor.r, fontColor.g, fontColor.b);
 			}
 			else
 			{
-				fl_rectf(xpos, y, lenchars, 16, 200, 200, 200);
-				fl_color(0, 0, 0);
+				fl_rectf(xpos, y, lenchars, 16, 255, 255, 255);
+				fl_color(FL_BLACK);
 			}
 			fl_draw(utf8buf, utf8len, xpos, y+12);
 		}

@@ -54,26 +54,26 @@ void test_stack()
 void test_queue()
 {
 	T_Queue<int> queue(true);
-	for (int i=0; i<100; i++) 
+	for (int i=0; i<100; i++)
 		queue.push(i);
-	for (int i=0; i<100; i++) 
-	    printf("pop=%d\n",queue.pop());	
-	for (int i=0; i<25; i++) 
+	for (int i=0; i<100; i++)
+	    printf("pop=%d\n",queue.pop());
+	for (int i=0; i<25; i++)
 		queue.push(i);
-	for (int i=0; i<10; i++) 
-        printf("pop=%d\n",queue.pop());	
+	for (int i=0; i<10; i++)
+        printf("pop=%d\n",queue.pop());
 }
 
 void test_queue_peek()
 {
 	T_Queue<int> queue(true);
-	for (int i=0; i<7; i++) 
-		queue.push(i);	
-	for (int i=0; i<4; i++) 
-		queue.pop();	
-	for (int i=0; i<4; i++) 
-		queue.push(7+i);	
-	int n;	
+	for (int i=0; i<7; i++)
+		queue.push(i);
+	for (int i=0; i<4; i++)
+		queue.pop();
+	for (int i=0; i<4; i++)
+		queue.push(7+i);
+	int n;
 	n = queue.peek(1);
 	n = queue.peek(6);
 	bool outof;
@@ -102,7 +102,7 @@ void test_ucs()
 	  {
 		  utf32to16_one(i, wbuf);
 		  n=utf16to32_one(wbuf,&len,2);
-		  if (n!=i) 
+		  if (n!=i)
 			  throw "bad utf8 conversion";
 	  }
 	}
@@ -141,10 +141,10 @@ void test_getNextLine()
 	show(strA);
 	strA = "abc\rdef\r\n\r123\n";	// "abc","def","","123",""
 	show(strA);
-	strA = "abc\rdef\r\r123";		// "abc","def","","123"	
+	strA = "abc\rdef\r\r123";		// "abc","def","","123"
 	show(strA);
 }
- 
+
 void test_stringlist()
 {
 	N_StringList list;
@@ -164,7 +164,7 @@ void sortlist()
 {
 	T_List<int> list;
 	srand(0);
-	for (int i=0; i<10; i++) 
+	for (int i=0; i<10; i++)
 		list.add(rand()%100);
 	list.compareP = compareInt;
 	for (int i=0; i<list.size(); i++) printf("%d ",list[i]);
@@ -179,9 +179,9 @@ void sortlist()
 void test_insert()
 {
 	T_List<int> list(true);
-	for (int i = 0; i < 10; i++)	
+	for (int i = 0; i < 10; i++)
 		list.add(i);
-	
+
 	list.block_insert(3, 4);
 	for (int i = 0; i < list.size(); i++)
 		printf("%d ", list[i]);
@@ -211,7 +211,7 @@ void test_mapping()
 	char *p = (char *)map.map(0);
 }
 
-int main(int argc, char** argv) {	
+int main(int argc, char** argv) {
 	test_queue_peek();
 	//getchar();
 }

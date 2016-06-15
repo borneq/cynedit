@@ -19,7 +19,7 @@ char *head,*tail;
   if (text==NULL) return false;
   head = text + pos;
   tail = head;
-  if (head>text && head[-1]==NULL) return false;
+  if (head[0]==NULL) return false;
 
   while (*tail != 10 && *tail != 13 && *tail != 0) tail++;
   line = (char*)malloc(tail-head+1);
@@ -49,9 +49,10 @@ char *head,*tail;
   endType = NO_LINE_END;
   line = NULL;
   if (text==NULL) return false;
+  if (pos>=maxLen) return false;
   head = text + pos;
   tail = head;
-  if (head>text && head[-1]==NULL) return false;
+  if (head[0]==NULL) return false;
 
   while (tail-head<maxLineLen && tail-text<maxLen && *tail != 10 && *tail != 13) tail++;
   if (UTF8Align)
@@ -158,7 +159,7 @@ void backToBeginLine(char *text, int &pos, int maxLineLen)
 	pos++;
 }
 
-void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen)
+void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen, bool &lineBound)
 {
 	int savpos = pos;
 	int lastLineBegin=0;
@@ -179,7 +180,13 @@ void backToBeginLines(char *text, int &pos, int nLines, int maxLinesLen)
 		if (savpos-pos>=maxLinesLen) break;
 	}
 	pos++;
-	if (lastLineBegin!=0 && pos!=0) pos=lastLineBegin;
+	if (lastLineBegin!=0 && pos!=0)
+	{
+		pos=lastLineBegin;
+		lineBound = true;
+	}
+	else if (pos==0) lineBound = true;
+	else lineBound = false;
 }
 
 //alloc space to lineA+lineB ana dfree lineA,lineB

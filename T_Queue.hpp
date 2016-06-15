@@ -1,5 +1,4 @@
-#ifndef T_QUEUE_H
-#define T_QUEUE_H
+#pragma once
 
 #include <exception>
 #include <assert.h>
@@ -103,7 +102,7 @@ protected:
 			else
 			{
 				int pos = _head+n;
-				if (pos<_capacity && pos>_head) //pos>_head: test for integer overflow
+				if (pos<_capacity && pos>=_head) //pos>=_head: test for integer overflow
 					return _list[pos];
 				else
 					return _list[pos-_capacity];
@@ -146,4 +145,3 @@ protected:
 	}
 };
 }
-#endif /*T_QUEUE_H*/

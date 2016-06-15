@@ -3,7 +3,7 @@
 namespace ab{
 	bool LexC::fLETTER(){
 		int ch = LA(1);
-		return ch>='A' && ch<='Z' || ch>='a' && ch<='z';				
+		return ch>='A' && ch<='Z' || ch>='a' && ch<='z';
 	}
 	bool LexC::fDIGIT(){
 		int ch = LA(1);
@@ -11,11 +11,10 @@ namespace ab{
 	}
 	void LexC::mTYPE()
 	{
-		if (LA(1) == 'i') 
-			matchLatin("int");
+		if (LA(1) == 'i')
+			approve("int",LEX_TYPE);
 		else
-			matchLatin("string");
-        Style = LEX_TYPE;
+			approve("string",LEX_TYPE);
 	}
 	void LexC::mWS()
 	{
@@ -25,128 +24,148 @@ namespace ab{
 			LA1 = LA(1);
 			if (LA1 == LEX_EOF) return;
 			if (LA1 == 9 || LA1 == 10 || LA1 == ' ')
-				consume();
+				approve(LEX_WS);
 			else
 				break;
 		}
-		Style = LEX_WS;
 	}
 
-	void LexC::mCOMMENT()
+	void LexC::mCOMMENT_LINE()
 	{
 		int LA1;
-	    matchLatin("//");
+	    approve("//",LEX_COMMENT);
 		while(true)
 		{
 		    LA1 = LA(1);
 			if (LA1 != -1 &&  LA1 != 10)
-				consume();
+				approve(LEX_COMMENT);
 			else
 				break;
 		}
-		Style = LEX_COMMENT;
+	}
+
+	void LexC::mCOMMENT_MULTI()
+	{
+		int LA1;
+	    approve("/*",LEX_COMMENT);
+		while(true)
+		{
+			LA1 = LA(1);
+			if (LA1 != '*') approve(LEX_COMMENT);
+			else
+			{
+				if (LA(2)=='/')
+				{
+					approve(2, LEX_COMMENT);
+					break;
+				}
+				else approve(2, LEX_COMMENT);
+			}
+    	}
 	}
 
 	void LexC::mID(){
 		int LA1;
 		if (fLETTER() || LA(1)=='_')
-			consume();
+			approve(LEX_ID);
 		while(true)
 		{
 			LA1 = LA(1);
 			if (fLETTER() || LA(1)=='_' || fDIGIT())
-				consume();
+				approve(LEX_ID);
 			else
 				break;
 		}
-		Style = LEX_ID;
 	}
 
 	void LexC::mSTRING_LITERAL()
 	{
-		matchOne('"');
+		approve(LEX_STRING_LITERAL);
 		while(true)
 		{
 			int LA1 = LA(1);
+			if (LA1=='\\' && LA(2)!=LEX_EOF && LA(2)!=10)
+				approve(2,LEX_STRING_LITERAL);
 			if (LA1!=LEX_EOF && LA1!='"' && LA1!=10)
-				consume();
-			else if (LA1=='"' && LA(2)=='"')
-				consume(2);
+				approve(LEX_STRING_LITERAL);
 			else break;
 		}
-		matchOne('"');
-		Style = LEX_STRING_LITERAL;
+		approve(LEX_STRING_LITERAL);
 	}
 	void LexC::mINT()
 	{
 		if (LA(1)=='0')
-			consume();
+			approve(LEX_INT);
 		else
 		{
-			consume(); //1..9
-			while (fDIGIT()) consume();
+			approve(LEX_INT); //1..9
+			while (fDIGIT()) approve(LEX_INT);
 		}
-		Style = LEX_INT;
 	}
+
 	void LexC::mRETURN()
 	{
-		matchLatin("return");
-		Style = LEX_RETURN;
+		approve("return",LEX_RETURN);
 	}
+
 	void LexC::execute()
 	{
-		int LA1 = LA(1);
-		if (LA1 == LEX_EOF) return;
-		if (LA1==' ' || LA1==9 || LA1==10) mWS();
-		else if (LA1>='A' && LA1>='Z' || LA1>='a' && LA1>='z' || LA1=='_')
+		while (true)
 		{
-			if (LA1=='i')
+			int LA1 = LA(1);
+			if (LA1 == LEX_EOF) return;
+			if (LA1==' ' || LA1==9 || LA1==10) mWS();
+			else if (LA1>='A' && LA1<='Z' || LA1>='a' && LA1<='z' || LA1=='_')
 			{
-				if (compareLatin("int"))
-					mTYPE();
+				if (LA1=='i')
+				{
+					if (compareLatin("int"))
+						mTYPE();
+					else
+						mID();
+				}
+				else if (LA1=='s')
+				{
+					if (compareLatin("string"))
+						mTYPE();
+					else
+						mID();
+				}
+				else if (LA1=='r')
+				{
+					if (compareLatin("return"))
+						mRETURN();
+					else
+						mID();
+				}
+				else mID();
+			}
+			else if (LA1>='0' && LA1<='9') mINT();
+			else if (LA1=='/')
+			{
+				if (LA(2)=='/')mCOMMENT_LINE();
+				else if (LA(2)=='*')mCOMMENT_MULTI();
 				else
-					mID();
+				{
+					approve(LEX_DIV);
+				}
 			}
-			else if (LA1=='s')
+			else if (LA1=='"')mSTRING_LITERAL();
+			else switch(LA1)
 			{
-				if (compareLatin("string"))
-					mTYPE();
-				else
-					mID();
+			  case ';': approve(LEX_SEMI);break;
+			  case '*': approve(LEX_MUL);break;
+			  case '+': approve(LEX_ADD);break;
+			  case '-': approve(LEX_SUB);break;
+			  case '/': approve(LEX_DIV);break;
+			  case '=': approve(LEX_ASSIGN);break;
+			  case '{': approve(LEX_OPEN_BRACE);break;
+			  case '}': approve(LEX_CLOSE_BRACE);break;
+			  case '(': approve(LEX_LPAREN);break;
+			  case ')': approve(LEX_RPAREN);break;
+			  case ',': approve(LEX_COMMA);break;
+			  default: approve(LEX_DEFAULT);
 			}
-			else if (LA1=='r')
-			{
-				if (compareLatin("return"))
-					mRETURN();
-				else
-					mID();
-			}
-			else mID();
-		}
-		else if (LA1>='0' && LA1>='9') mINT();
-		else if (LA1=='/')
-		{
-			if (LA(2)=='/')mCOMMENT();
-			else 
-			{
-				consume();
-				Style = LEX_DIV;
-			}
-		}
-		else if (LA1=='"')mSTRING_LITERAL();
-		else switch(LA1)
-		{
-		  case ';': Style = LEX_SEMI;consume();break;
-          case '*': Style = LEX_MUL;consume();break;
-          case '+': Style = LEX_ADD;consume();break;
-          case '-': Style = LEX_SUB;consume();break;
-          case '/': Style = LEX_DIV;consume();break;
-          case '=': Style = LEX_ASSIGN;consume();break;
-          case '{': Style = LEX_OPEN_BRACE;consume();break;
-          case '}': Style = LEX_CLOSE_BRACE;consume();break;
-          case '(': Style = LEX_LPAREN;consume();break;
-          case ')': Style = LEX_RPAREN;consume();break;
-          case ',': Style = LEX_COMMA;consume();break;
 		}
 	}
 }

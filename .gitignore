@@ -1,3 +1,7 @@
+x64/
+.vs/
+*.db
+*.opendb
 Release/
 Debug/
 ipch/

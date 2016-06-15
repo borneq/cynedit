@@ -25,9 +25,13 @@ namespace ab {
 		{
 			return filesize_;
 		}
-		inline int mapsize()
+		inline int current_mapsize()
 		{
 			return current_mapsize_;
+		}
+		inline int request_mapsize()
+		{
+			return request_mapsize_;
 		}
 		inline int granul()
 		{

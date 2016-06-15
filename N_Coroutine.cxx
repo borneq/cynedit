@@ -15,6 +15,7 @@ void __stdcall fiberProc(void *param)
 {
 	N_Coroutine *coroutine = (N_Coroutine *)param;
 	coroutine->execute();
+	coroutine->terminated = true;
 	SwitchToFiber(initFiber);
 }
 
@@ -31,7 +32,8 @@ void N_Coroutine::yield(N_Coroutine *next)
 
 void N_Coroutine::attach()
 {
-	SwitchToFiber(fiber);
+	if (!terminated)
+		SwitchToFiber(fiber);
 }
 
 N_Coroutine::N_Coroutine(long stackSize)
@@ -40,6 +42,7 @@ N_Coroutine::N_Coroutine(long stackSize)
 		initFiber = ConvertThreadToFiber(NULL);
 	fiber = CreateFiber(stackSize, fiberProc, (void*)this);
 	prevfiber = initFiber;
+	terminated = false;
 }
 N_Coroutine::~N_Coroutine()
 {
@@ -65,6 +68,7 @@ static void fiber_start_fnc(void* p)
     }
     Coroutine *coroutine = (Coroutine *)uctx;
     coroutine->execute();
+	coroutine->terminated = true;
 }
 
 inline void create_fiber(fiber_t* fib, void* uctx)
@@ -99,7 +103,8 @@ void Coroutine::yield(Coroutine *next)
 
 void Coroutine::attach()
 {
-    switch_to_fiber(fib, fibmain);
+	if (!terminated)
+		switch_to_fiber(fib, fibmain);
 }
 
 Coroutine::Coroutine(long stackSize)
@@ -110,6 +115,7 @@ Coroutine::Coroutine(long stackSize)
         initialized_fibmain = true;
     }
     create_fiber(&fib, this);
+	terminated = false;
 }
 
 Coroutine::~Coroutine()

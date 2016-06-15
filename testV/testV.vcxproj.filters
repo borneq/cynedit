@@ -63,6 +63,12 @@
     <ClCompile Include="..\lexers\LexC.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\lexers\ColorsC.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FileMinus.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\N_StringList.h">
@@ -102,6 +108,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\lexers\LexC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexers\LexXML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Colorizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexers\tokensC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexers\ColorsC.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FileMinus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

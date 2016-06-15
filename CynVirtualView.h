@@ -10,12 +10,15 @@
 #include <N_File_Stream.h>
 #include <N_Mapping.h>
 #include <V_Drawer.h>
+#include <Lexer.h>
+#include <FileMinus.h>
 
 using namespace ab;
 
 namespace afltk {
 	const unsigned char BOM_UTF8_DATA[3] = { 0xEF, 0xBB, 0xBF };
 	const int MaxLineLen = 1024;
+
 	class FL_EXPORT CynVirtualView : public Fl_Group {
 		friend void VScrollbar_CB(Fl_Widget* w, void *p);
 		friend void VScrollbar_CB1(Fl_Widget* w, void *p, VPS_Increment* inc);
@@ -33,17 +36,18 @@ namespace afltk {
 		int coding;
 		T_List<char*> *lines;
 		long long filePos;
-		int lineFilePos;
 		int numVisibleLines;
 		void init_map(const wchar_t *fileName);
 		void update_map();
-		int findFirstVisibleLine();
+		int findFirstConsiderLine(bool &lineBound);
 		inline int getNumVisibleLines(){ return max(0, (h() - 16) / 16); }
 		int h_changeslider; //previous h(), chenge slider only if h() changes
 		uchar tabWidth;
 		bool tabAlign;
 		int horizPos_;
 		V_Drawer *drawer;
+		Lexer *lex; ///can be set outside this widget
+		FileMinus *fileMinus;
 	public:
 		CynVirtualView(int X, int Y, int W, int H, const char *L = 0);
 		~CynVirtualView();
@@ -51,7 +55,7 @@ namespace afltk {
 		void draw();
 		void determineCoding();
 		void setFile(const wchar_t *fileName);
-		void initThread();
+		void setLex(Lexer *lex, Colorizer *colorizer);
 		inline int horizPos(){return horizPos_;}
 		void horizPos(int value){horizPos_ = value; redraw();}
 	};

@@ -1,6 +1,5 @@
 ///functionality of stack is subset of list functionality
-#ifndef T_STACK_H
-#define T_STACK_H
+#pragma once
 #include <T_List.hpp>
 
 namespace ab {
@@ -22,4 +21,4 @@ public:
 	}
 };
 }
-#endif /*T_STACK_H*/
+

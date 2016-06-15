@@ -1,10 +1,9 @@
-#ifndef T_LIST_H
-#define T_LIST_H
+#pragma once
 
 #include <string.h> // memcpy
 #include <stdlib.h> //malloc
 #include <assert.h>
-#include <N_Base_List.H>
+#include "N_Base_List.H"
 
 namespace ab {
 /// B_List is template class of list
@@ -203,6 +202,7 @@ public:
 
 	inline int size(){return _size;}
 	inline int capacity(){return _capacity;}
+	inline void setcapacity(int newsize){grow(newsize, _size, newsize-_size);}
 	inline T operator[](int n) {return _list[n];}
 	inline T at(int n) { return _list[n]; }
 	inline void set(int n, T item) { _list[n] = item; }
@@ -218,4 +218,3 @@ public:
 };
 }
 
-#endif /*T_LIST_H*/

@@ -1,6 +1,4 @@
-Lexer:
-problems: if get next line but process less
-matxhLatin unnecessary?
+scrollbar line up/down for virtual viewer
 maybe channel hidden needed when will folding?
 
 T_List::delAtEnd(int count=1)

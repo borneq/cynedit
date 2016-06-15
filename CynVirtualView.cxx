@@ -3,6 +3,7 @@
 #include <CynVirtualView.h>
 #include <N_Threads.h>
 #include <N_TextUtil.h>
+#include <N_TextUtil.h>
 
 using namespace ab;
 
@@ -11,8 +12,7 @@ namespace afltk {
 	{
 		CynVirtualView* view = (CynVirtualView*)p;
 		V_PageScrollbar* scroll = (V_PageScrollbar*)w;
-		view->filePos = (long long)((double)scroll->value() / (scroll->maximum() - scroll->minimum())*view->mapObj->filesize());
-		view->lineFilePos = (int)(view->numVisibleLines*(double)scroll->value() / (scroll->maximum() - scroll->minimum()));
+		view->filePos = (long long)((double)scroll->value() / (scroll->maximum() - scroll->minimum())*view->fileMinus->getPosFromEnd(view->numVisibleLines));
 		view->redraw();
 	}
 
@@ -55,6 +55,8 @@ namespace afltk {
 		tabAlign = true;
 		horizPos_ = 0;
 		drawer = new V_Drawer();
+		lex = NULL;
+		fileMinus = NULL;
 	}
 
 	/// Destructor.
@@ -64,6 +66,7 @@ namespace afltk {
 		delete _vscroll;
 		delete _hscroll;
 		delete drawer;
+		delete fileMinus;
 	}
 
 	int CynVirtualView::handle(int event)
@@ -72,70 +75,64 @@ namespace afltk {
 		return 1;
 	}
 
-	int CynVirtualView::findFirstVisibleLine()
+	//back to first line, if long lines exceeds MaxLineLen back more
+	int CynVirtualView::findFirstConsiderLine(bool &lineBound)
 	{
 		int i = startMappos;
-		backToBeginLines(map, i, lineFilePos+1, (numVisibleLines+1)*(MaxLineLen+1));
+		backToBeginLines(map, i, numVisibleLines+1, (numVisibleLines+1)*(MaxLineLen+2), lineBound);
 		if (mappos==0 && Bom_type==BOM_UTF8 && i<sizeof(BOM_UTF8_DATA))
 			i=sizeof(BOM_UTF8_DATA);
 		return i;
 	}
 
-
-	//move this function to lexer
-	void Lex(char *line, unsigned short *lineStyle)
-	{
-	}
-
 	void CynVirtualView::draw()
 	{
 		fl_font(FL_COURIER, 12);
-		filePos = (long long)((double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum())*mapObj->filesize());
-		lineFilePos = (int)(numVisibleLines*(double)_vscroll->value() / (_vscroll->maximum() - _vscroll->minimum()));
 		numVisibleLines = getNumVisibleLines();
+		int BomBytes;
+		if (Bom_type==BOM_UTF8) BomBytes=sizeof(BOM_UTF8_DATA);
+		else BomBytes=0;
+		fileMinus->find_ending_lines(numVisibleLines, mapObj, MaxLineLen, BomBytes, coding);
 		update_map();
-		int pos = findFirstVisibleLine();
+		bool lineBound;
+		int pos = findFirstConsiderLine(lineBound);
 		int pos0 = pos;
 		int ymax = y()+h() - 16; //-16 for _hscroll height afer _hscroll resize
 		char *line;
 		int blockLine = 0;
 		int endType;
-		while (getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
+		int posY = y();
+		int firstVisible = -1;
+		while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
 		{
+			if (endType!=NO_LINE_END) lineBound = true;
+			if (pos>startMappos)
+			{
+				if (firstVisible==-1) firstVisible=lines->size();
+				posY += 16;
+			}
 			lines->add(line);
-			if (pos>startMappos || pos==current_mapsize) break;
-		}
-		int loopcnt = lines->size()-lineFilePos-1;
-		if (lineFilePos>=numVisibleLines)
-			loopcnt +=lineFilePos-numVisibleLines+1;
-		for (int i = 0; i < loopcnt; i++)
-		{
-			pos0 += strlen(lines->at(0))+1;
-			free(lines->at(0));
-			lines->del(0);
-		}
-		int posY = y()+16*lines->size();
-    	while (posY < ymax && getNextLine(map, current_mapsize, line, pos, endType, MaxLineLen, coding==CODING_UTF8))
-		{
-			lines->add(line);
-			posY += 16;
 		}
 		drawer->init_visible_line(w()-16, horizPos_);
 		for (int i = 0; i < lines->size(); i++)
 		{
 			int lineLen = strlen(lines->at(i));
-			int *ucs4line = (int *)malloc(lineLen*sizeof(int));
+			//add char 10 at end
+			int *ucs4line = (int *)malloc((lineLen+1)*sizeof(int));
 			int ucs4len = utf8to32(lines->at(i), lineLen, ucs4line);
+			ucs4line[ucs4len] = 10;
+			ucs4len++; //at least 1 char
 			unsigned short *lineStyle = (unsigned short *)malloc(ucs4len*sizeof(unsigned short));
-			for (int j=0; j<ucs4len; j++)
-				lineStyle[j]=0;
-			for (int j=0; j<min(ucs4len,5); j++)
-				lineStyle[j]=1;
-			if (8<ucs4len)lineStyle[8] = 1;
-			if (10<ucs4len)lineStyle[10] = 1;
-
-			drawer->fixedTabExpand(ucs4line, ucs4len, lineStyle, tabWidth, tabAlign);
-			drawer->draw_styled_ucs4(x(), y() + i * 16);
+			if (lex!=NULL)
+			{
+				lex->setLine(ucs4line,ucs4len,lineStyle);
+				lex->attach();
+			}
+			if (i>=firstVisible)
+			{
+				drawer->fixedTabExpand(ucs4line, ucs4len, lineStyle, tabWidth, tabAlign);
+				drawer->draw_styled_ucs4(x(), y() + (i-firstVisible) * 16);
+			}
 			free(lineStyle);
 			free(ucs4line);
 		}
@@ -165,8 +162,19 @@ namespace afltk {
 	{
 		init_map(fileName);
 		filePos = 0;
-		lineFilePos = 0;
 		_vscroll->value(0);
+		delete fileMinus;
+		fileMinus = new FileMinus();
+		int BomBytes;
+		if (Bom_type==BOM_UTF8) BomBytes=sizeof(BOM_UTF8_DATA);
+		else BomBytes=0;
+		fileMinus->find_ending_lines(numVisibleLines, mapObj, MaxLineLen, BomBytes, coding);
+	}
+
+	void CynVirtualView::setLex(Lexer *lex, Colorizer *colorizer)
+	{
+		this->lex = lex;
+		drawer->colorizer = colorizer;
 	}
 
     void CynVirtualView::init_map(const wchar_t *fileName)
@@ -175,7 +183,7 @@ namespace afltk {
 		request_mapsize = 256*1024;
 		mapObj = new N_Mapping(fileName, request_mapsize);
 		map = (char*)mapObj->map(0);
-		current_mapsize = mapObj->mapsize();
+		current_mapsize = mapObj->current_mapsize();
 		determineCoding();
 	}
 
@@ -194,7 +202,7 @@ namespace afltk {
 		assert(filePos>=mappos && filePos-mappos<request_mapsize);
 		startMappos = (int)(filePos-mappos);
 		map = (char*)mapObj->map(mappos);
-		current_mapsize = mapObj->mapsize();
+		current_mapsize = mapObj->current_mapsize();
 	}
 
 	void CynVirtualView::determineCoding()

@@ -25,8 +25,9 @@ namespace ab {
 		fiber_t fib;
 		friend static void fiber_start_fnc(void* p)
 #endif
+		bool terminated;
 	protected:
-		virtual void execute() = 0;
+		virtual void execute(){};
 	public:
 		void yield(N_Coroutine *next=NULL);
 		void attach();
